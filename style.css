@@ -349,7 +349,9 @@ body {
   flex-direction: column;
   align-items: flex-start;
   gap: 30px;
+  background: linear-gradient(to bottom, #2bb0ff 0%, #0b3dff 45%, #0a1dff 100%);
 }
+
 
 .dash-logo {
   font-size: 60px;
