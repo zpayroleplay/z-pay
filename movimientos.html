@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>Z-Pay | Movimientos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+      <span class="header-home" onclick="window.location.href='dashboard.html'">🏠</span>
+      <div class="header-center">
+        <h1 class="header-title">MOVIMIENTOS</h1>
+        <p id="mov-cuenta" class="header-subtitle">Número de cuenta: —</p>
+      </div>
+      <h1 class="logo header-logo"><span class="logo-z">Z</span>-Pay</h1>
+    </div>
+    <div class="header-bar"></div>
+
+    <!-- CONTENIDO -->
+    <div class="mov-content">
+
+      <div class="mov-tabla-container">
+        <table class="admin-tabla">
+          <thead>
+            <tr>
+              <th>CONCEPTO</th>
+              <th>U$D</th>
+            </tr>
+          </thead>
+          <tbody id="mov-tabla">
+            <tr><td colspan="2">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="saldo-box mov-saldo">
+        <p class="saldo-label">SALDO:</p>
+        <p id="mov-saldo" class="saldo-monto">—</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module" src="movimientos.js"></script>
+
+</body>
+</html>

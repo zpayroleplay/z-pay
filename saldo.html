@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>Z-Pay | Saldo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+      <span class="header-home" onclick="window.location.href='dashboard.html'">🏠</span>
+      <h1 class="header-title">VER SALDO</h1>
+      <h1 class="logo header-logo"><span class="logo-z">Z</span>-Pay</h1>
+    </div>
+    <div class="header-bar"></div>
+
+    <!-- CONTENIDO -->
+    <div class="saldo-content">
+
+      <div class="saldo-box">
+        <p class="saldo-label">SALDO:</p>
+        <p id="saldo-monto" class="saldo-monto">Cargando...</p>
+      </div>
+
+      <div class="saldo-lateral">
+        <p class="saldo-info">Podés verificar tus movimientos bancarios y deudas clickeando abajo.</p>
+        <div class="saldo-separador"></div>
+        <button class="saldo-btn" onclick="window.location.href='deudas.html'">DEUDAS</button>
+        <button class="saldo-btn" onclick="window.location.href='movimientos.html'">MOVIMIENTOS</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script type="module" src="saldo.js"></script>
+
+</body>
+</html>
