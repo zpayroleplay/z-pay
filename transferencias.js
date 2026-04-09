@@ -37,10 +37,14 @@ window.transferir = async function () {
     return
   }
 
-  if (destinatario === cuentaOrigen.numero_cuenta) {
+  if (
+    destinatario === cuentaOrigen.numero_cuenta ||
+    destinatario === cuentaOrigen.alias
+  ) {
     msg.textContent = 'No podés transferirte a vos mismo.'
     return
   }
+  
 
   let { data: cuentaDestino } = await supabase
     .from('accounts')

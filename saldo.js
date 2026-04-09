@@ -8,7 +8,7 @@ const user = JSON.parse(userData)
 async function cargarSaldo() {
   const { data: cuenta } = await supabase
     .from('accounts')
-    .select('saldo')
+    .select('id, numero_cuenta, saldo, alias')
     .eq('user_id', user.id)
     .single()
 
