@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>Z-Pay | Solicitudes de Préstamos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+      <span class="header-home" onclick="window.location.href='admin.html'">🏠</span>
+      <h1 class="header-title">SOLICITUDES DE PRÉSTAMOS</h1>
+      <h1 class="logo header-logo"><span class="logo-z">Z</span>-Pay</h1>
+    </div>
+    <div class="header-bar"></div>
+
+    <!-- TABLA -->
+    <div class="admin-content">
+      <div class="admin-tabla-container">
+        <table class="admin-tabla">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+<th>ID PSN</th>
+<th>Monto U$D</th>
+<th>Cuotas</th>
+<th>Credit Score</th>
+<th>Aprobar</th>
+<th>Rechazar</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-prestamos">
+            <tr><td colspan="6">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- MODAL CONFIRMACIÓN -->
+<div id="modal-overlay" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <h2 id="modal-titulo" class="modal-titulo"></h2>
+    <p id="modal-subtitulo" class="modal-subtitulo"></p>
+    <div class="modal-botones">
+      <button id="modal-confirmar" class="btn-acreditar modal-btn">CONFIRMAR</button>
+      <button class="btn-retirar modal-btn" onclick="cerrarModal()">CANCELAR</button>
+    </div>
+  </div>
+</div>
+
+  <script type="module" src="prestamos-admin.js"></script>
+
+</body>
+</html>

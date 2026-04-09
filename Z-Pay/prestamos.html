@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Z-Pay | Préstamos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+      <span class="header-home" onclick="window.location.href='dashboard.html'">🏠</span>
+      <div class="header-center">
+        <h1 class="header-title">PRÉSTAMOS</h1>
+        <p id="prestamo-cuenta" class="header-subtitle">Número de cuenta: —</p>
+      </div>
+      <h1 class="logo header-logo"><span class="logo-z">Z</span>-Pay</h1>
+    </div>
+    <div class="header-bar"></div>
+
+    <!-- CONTENIDO -->
+    <div class="prestamo-content">
+
+      <!-- EXPLICACION -->
+      <div class="prestamo-info">
+        <h2 class="prestamo-info-titulo">¿Cómo gestiono un préstamo?</h2>
+        <p>Para gestionar un préstamo como cliente deberás llenar los campos a la derecha para que sean analizados por nuestros funcionarios. Recordá respetar los límites de tu franja salarial.</p>
+        <h2 class="prestamo-info-titulo">¿Puedo hacerlo presencialmente?</h2>
+        <p>Sí, podés tramitarlo en la sucursal más cercana.</p>
+
+        <!-- INFO DE FRANJA -->
+        <div class="prestamo-franja-box" id="franja-box" style="display:none">
+          <p class="prestamo-franja-titulo">Tu franja salarial</p>
+          <p id="franja-nombre" class="prestamo-franja-valor"></p>
+          <p>Sueldo: <strong id="franja-sueldo"></strong></p>
+          <p>Máximo préstamo: <strong id="franja-maximo"></strong></p>
+          <p>Cuotas mínimas: <strong id="franja-cuotas"></strong></p>
+        </div>
+
+        <div class="prestamo-franja-box prestamo-franja-warn" id="franja-sin-sueldo" style="display:none">
+          <p>⚠️ No tenés sueldo asignado. No podés solicitar préstamos.</p>
+        </div>
+      </div>
+
+      <!-- FORMULARIO -->
+      <div class="prestamo-form">
+        <p class="prestamo-obligatorio">* Todos los campos son obligatorios</p>
+
+        <div class="transferencia-campo">
+          <label>Titular:</label>
+          <div class="gestionar-alias-actual" id="prestamo-titular">Cargando...</div>
+        </div>
+
+        <div class="transferencia-campo">
+          <label>Monto U$D:</label>
+          <input type="number" id="prestamo-monto" placeholder="0.00" min="0" />
+        </div>
+
+        <div class="transferencia-campo">
+          <label>Cuotas:</label>
+          <input type="number" id="prestamo-cuotas" placeholder="Cantidad de cuotas" min="1" />
+        </div>
+
+        <p id="prestamo-msg" class="admin-msg"></p>
+        <button class="login-btn" onclick="solicitarPrestamo()">SOLICITAR</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module" src="prestamos.js"></script>
+
+</body>
+</html>

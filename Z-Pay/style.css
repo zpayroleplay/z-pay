@@ -1,0 +1,893 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+html, body {
+  height: 100%;
+}
+
+/* ===== LANDING ===== */
+body {
+  background: linear-gradient(to bottom, #2bb0ff 0%, #0b3dff 45%, #0a1dff 100%);
+}
+
+.landing {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.welcome {
+  color: white;
+  font-size: 38px;
+  font-weight: 600;
+}
+
+.logo {
+  font-size: 130px;
+  font-weight: 900;
+  color: white;
+}
+
+.logo-z {
+  color: #FFD400;
+}
+
+.cta-btn {
+  background-color: #FFD400;
+  color: #1a1a1a;
+  border: none;
+  border-radius: 35px;
+  padding: 18px 70px;
+  font-size: 28px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.cta-btn:hover {
+  transform: scale(1.03);
+}
+/* ===== LOGIN ===== */
+.login {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.login-logo {
+  font-size: 90px;
+}
+
+.login-title {
+  color: white;
+  font-size: 28px;
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+}
+
+.login-box {
+  width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.login-box label {
+  color: white;
+  font-size: 16px;
+  letter-spacing: 3px;
+}
+
+.login-box input {
+  width: 100%;
+  height: 55px;
+  border-radius: 14px;
+  border: none;
+  padding: 0 20px;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.password-box {
+  position: relative;
+}
+
+.password-box input {
+  padding-right: 55px;
+  margin-bottom: 0;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.login-btn {
+  margin-top: 25px;
+  align-self: center;
+  background-color: #FFD400;
+  border: none;
+  border-radius: 20px;
+  padding: 16px 60px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.login-btn:hover {
+  transform: scale(1.03);
+}
+
+.error-msg {
+  color: #ff4444;
+  font-size: 14px;
+  text-align: center;
+  min-height: 20px;
+}
+/* ===== HEADER GENERAL ===== */
+.page {
+  min-height: 100vh;
+  background: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: linear-gradient(to right, #0b3dff, #2bb0ff);
+  padding: 18px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-home {
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.header-title {
+  color: white;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.header-logo {
+  font-size: 40px;
+}
+
+.header-bar {
+  height: 8px;
+  background: #FFD400;
+}
+
+/* ===== ADMIN ===== */
+.admin-content {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.admin-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.admin-card-title {
+  color: #0b3dff;
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.admin-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.admin-form input {
+  height: 45px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 0 16px;
+  font-size: 16px;
+  flex: 1;
+  min-width: 180px;
+}
+
+.admin-form .btn-acreditar {
+  height: 45px;
+  padding: 0 24px;
+  font-size: 15px;
+  flex: none;
+  align-self: center;
+}
+
+.admin-msg {
+  margin-top: 12px;
+  font-size: 14px;
+  color: green;
+}
+
+.admin-tabla-container {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow-x: auto;
+}
+
+.admin-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.admin-tabla th {
+  background: #0b3dff;
+  color: white;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.admin-tabla td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.admin-tabla tr:hover {
+  background: #f9f9f9;
+}
+
+.btn-acreditar {
+  background: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 800;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.btn-retirar {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 800;
+  cursor: pointer;
+  font-size: 13px;
+}
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-box {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+.modal-titulo {
+  color: #0b3dff;
+  font-size: 22px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.modal-subtitulo {
+  color: #555;
+  font-size: 15px;
+  text-align: center;
+}
+
+.modal-input {
+  width: 100%;
+  height: 50px;
+  border-radius: 12px;
+  border: 2px solid #0b3dff;
+  padding: 0 16px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.modal-botones {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.modal-btn {
+  padding: 12px 28px;
+  font-size: 15px;
+  border-radius: 12px;
+}
+/* ===== DASHBOARD ===== */
+.dashboard {
+  min-height: 100vh;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+  background: linear-gradient(to bottom, #2bb0ff 0%, #0b3dff 45%, #0a1dff 100%);
+}
+
+
+.dash-logo {
+  font-size: 60px;
+}
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: 220px repeat(3, 1fr);
+  grid-template-rows: auto auto;
+  gap: 20px;
+  width: 100%;
+}
+
+.dash-card {
+  border-radius: 20px;
+  padding: 24px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  transition: transform 0.15s ease;
+  min-height: 160px;
+  position: relative;
+}
+
+.dash-card:hover {
+  transform: scale(1.02);
+}
+
+.dash-card-light {
+  background: #e8e8e8;
+  color: #1a1a1a;
+}
+
+.dash-card-dark {
+  background: #0f2d5e;
+  color: white;
+}
+
+.dash-card-icon {
+  background: #FFD400;
+  color: #1a1a1a;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  align-self: flex-end;
+}
+
+.dash-card-label {
+  font-size: 22px;
+  font-weight: 600;
+  margin-top: auto;
+}
+
+.dash-saldo {
+  grid-row: span 2;
+  min-height: 340px;
+  justify-content: space-between;
+}
+
+.dash-arrow {
+  font-size: 28px;
+  margin-top: auto;
+}
+
+.dash-perfil {
+  cursor: default;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+
+.dash-perfil:hover {
+  transform: none;
+}
+
+.dash-perfil-icon {
+  font-size: 40px;
+  color: #FFD400;
+}
+
+.dash-perfil-nombre {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.dash-perfil-cuenta {
+  font-size: 13px;
+  opacity: 0.7;
+}
+/* ===== SALDO ===== */
+.saldo-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px 80px;
+  gap: 40px;
+  flex: 1;
+}
+
+.saldo-box {
+  background: white;
+  border-radius: 20px;
+  padding: 40px 60px;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.saldo-label {
+  color: #0b3dff;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.saldo-monto {
+  color: #0b3dff;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.saldo-lateral {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 300px;
+}
+
+.saldo-info {
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.saldo-separador {
+  width: 4px;
+  height: 120px;
+  background: #FFD400;
+  border-radius: 4px;
+  align-self: flex-start;
+}
+
+.saldo-btn {
+  background: #0f2d5e;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 40px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: transform 0.15s ease;
+  width: 100%;
+}
+
+.saldo-btn:hover {
+  transform: scale(1.03);
+}
+/* ===== TRANSFERENCIAS ===== */
+.transferencia-content {
+  padding: 60px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.transferencia-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 600px;
+}
+
+.transferencia-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.transferencia-campo label {
+  color: #0b3dff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.transferencia-campo input {
+  height: 55px;
+  border-radius: 14px;
+  border: none;
+  background: white;
+  padding: 0 20px;
+  font-size: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.transfer-btn {
+  align-self: center;
+  background: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 16px 60px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  margin-top: 10px;
+}
+
+.transfer-btn:hover {
+  transform: scale(1.03);
+}
+/* ===== MOVIMIENTOS ===== */
+.header-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.header-subtitle {
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.mov-content {
+  padding: 40px 60px;
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.mov-tabla-container {
+  flex: 1;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.mov-saldo {
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.mov-positivo {
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.mov-negativo {
+  color: #ef4444;
+  font-weight: 700;
+}
+/* ===== PRÉSTAMOS ===== */
+.prestamo-content {
+  padding: 50px 80px;
+  display: flex;
+  gap: 80px;
+  align-items: flex-start;
+}
+
+.prestamo-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: #1a1a1a;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.prestamo-info-titulo {
+  color: #0b3dff;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.prestamo-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.prestamo-obligatorio {
+  color: #888;
+  font-size: 13px;
+  text-align: right;
+}
+/* ===== ADMIN DASHBOARD ===== */
+.admin-dash-bienvenida {
+  color: white;
+  font-size: 22px;
+  font-weight: 600;
+  margin-top: -20px;
+}
+
+.admin-dash-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.admin-dash-card {
+  border-radius: 20px;
+  padding: 36px 30px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.15s ease;
+  min-height: 180px;
+}
+
+.admin-dash-card:hover {
+  transform: scale(1.02);
+}
+
+.admin-dash-azul {
+  background: #e8e8e8;
+  color: #1a1a1a;
+}
+
+.admin-dash-oscuro {
+  background: #0f2d5e;
+  color: white;
+}
+
+.admin-dash-icon {
+  font-size: 36px;
+}
+
+.admin-dash-label {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.admin-dash-desc {
+  font-size: 14px;
+  opacity: 0.7;
+}
+/* ===== SELECT ===== */
+.admin-select {
+  height: 45px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 0 16px;
+  font-size: 16px;
+  flex: 1;
+  min-width: 150px;
+  background: white;
+  cursor: pointer;
+}
+/* ===== GESTIONAR CUENTA ===== */
+.gestionar-content {
+  padding: 50px 80px;
+  display: flex;
+  flex-direction: row;
+  gap: 80px;
+  align-items: flex-start;
+}
+
+.gestionar-columna {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.gestionar-seccion-titulo {
+  color: #888;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.gestionar-alias-actual {
+  height: 55px;
+  border-radius: 14px;
+  background: #e0e0e0;
+  padding: 0 20px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0b3dff;
+  display: flex;
+  align-items: center;
+}
+
+.gestionar-aviso {
+  color: #888;
+  font-size: 13px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ===== GESTIONAR SECCION ===== */
+.gestionar-seccion {
+  color: #0b3dff;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+/* ===== FRANJA SALARIAL ===== */
+.prestamo-franja-box {
+  background: #0f2d5e;
+  color: white;
+  border-radius: 14px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+.prestamo-franja-warn {
+  background: #b91c1c;
+}
+
+.prestamo-franja-titulo {
+  font-size: 13px;
+  opacity: 0.7;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.prestamo-franja-valor {
+  font-size: 22px;
+  font-weight: 800;
+  color: #FFD400;
+}
+/* ===== PRÉSTAMO PRESENCIAL ===== */
+.prestamo-presencial-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 600px;
+}
+
+.prestamo-presencial-info {
+  background: #0f2d5e;
+  border-radius: 14px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.prestamo-presencial-dato {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 8px;
+}
+
+.prestamo-presencial-label {
+  color: rgba(255,255,255,0.6);
+  font-size: 14px;
+}
+
+.prestamo-presencial-valor {
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+}
+/* ===== NOTIFICACIONES ===== */
+.notif-content {
+  padding: 40px 60px;
+}
+
+.notif-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 700px;
+}
+
+.notif-item {
+  background: white;
+  border-radius: 14px;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  border-left: 5px solid #0b3dff;
+}
+
+.notif-item.no-leida {
+  border-left-color: #FFD400;
+  background: #fffbea;
+}
+
+.notif-icono {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.notif-texto {
+  flex: 1;
+}
+
+.notif-mensaje {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.notif-fecha {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+}
+
+.notif-vacia {
+  color: #888;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 40px;
+}

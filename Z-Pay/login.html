@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>Z-Pay | Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="login">
+    <h1 class="logo login-logo"><span class="logo-z">Z</span>-Pay!</h1>
+    <p class="login-title">INICIAR SESIÓN</p>
+
+    <div class="login-box">
+      <label>USUARIO:</label>
+      <input type="text" id="username" placeholder="Tu ID de PlayStation" />
+
+      <label>CONTRASEÑA:</label>
+      <div class="password-box">
+        <input type="password" id="password" placeholder="Tu contraseña" />
+        <span class="toggle-password" onclick="togglePassword()">👁</span>
+      </div>
+
+      <p id="error-msg" class="error-msg"></p>
+
+      <button class="login-btn" id="login-btn">INGRESAR</button>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+
+</body>
+</html>
+<script>
+    function togglePassword() {
+      const input = document.getElementById('password')
+      input.type = input.type === 'password' ? 'text' : 'password'
+    }
+
+    function login() {
+      document.getElementById('login-btn').dispatchEvent(new Event('click-interno'))
+    }
+  </script>
+  <script type="module">
+    import { supabase } from './supabase.js'
+
+    document.getElementById('login-btn').addEventListener('click', async function () {
+      const username = document.getElementById('username').value.trim()
+      const password = document.getElementById('password').value.trim()
+      const errorMsg = document.getElementById('error-msg')
+
+      errorMsg.textContent = ''
+
+      if (!username || !password) {
+        errorMsg.textContent = 'Completá todos los campos.'
+        return
+      }
+
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('username', username)
+        .eq('password_hash', password)
+        .single()
+
+      if (error || !data) {
+        errorMsg.textContent = 'Usuario o contraseña incorrectos.'
+        return
+      }
+
+      localStorage.setItem('zpay_user', JSON.stringify(data))
+
+     if (data.rol === 'superadmin') {
+  window.location.href = 'superadmin.html'
+} else if (data.rol === 'admin') {
+  window.location.href = 'admin-dashboard.html'
+} else {
+  window.location.href = 'dashboard.html'
+}
+}
+      
+    )
+  </script>
+
+</body>
+</html>

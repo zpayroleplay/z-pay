@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>Z-Pay | Transferencias</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+      <span class="header-home" onclick="window.location.href='dashboard.html'">🏠</span>
+      <h1 class="header-title">TRANSFERENCIAS</h1>
+      <h1 class="logo header-logo"><span class="logo-z">Z</span>-Pay</h1>
+    </div>
+    <div class="header-bar"></div>
+
+    <!-- CONTENIDO -->
+    <div class="transferencia-content">
+
+      <div class="saldo-box">
+        <p class="saldo-label">SALDO:</p>
+        <p id="saldo-monto" class="saldo-monto">Cargando...</p>
+      </div>
+
+      <div class="transferencia-form">
+        <div class="transferencia-campo">
+          <label>Destinatario:</label>
+          <input type="text" id="destinatario" placeholder="Número de cuenta o alias" />
+        </div>
+        <div class="transferencia-campo">
+          <label>Monto U$D:</label>
+          <input type="number" id="monto" placeholder="0.00" min="0" />
+        </div>
+        <p id="transfer-msg" class="admin-msg"></p>
+        <button class="transfer-btn" onclick="transferir()">TRANSFERIR</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module" src="transferencias.js"></script>
+
+</body>
+</html>

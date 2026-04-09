@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Z-Pay | Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="dashboard">
+
+    <h1 class="logo dash-logo"><span class="logo-z">Z</span>-Pay</h1>
+
+    <div class="dash-grid">
+
+      <div class="dash-card dash-card-dark dash-saldo" onclick="window.location.href='saldo.html'">
+        <span class="dash-card-icon">+</span>
+        <p class="dash-card-label">Saldo</p>
+        <span class="dash-arrow">→</span>
+      </div>
+
+      <div class="dash-card dash-card-light" onclick="window.location.href='transferencias.html'">
+        <span class="dash-card-icon">+</span>
+        <p class="dash-card-label">Transferencia</p>
+      </div>
+
+      <div class="dash-card dash-card-light" onclick="window.location.href='prestamos.html'">
+        <span class="dash-card-icon">+</span>
+        <p class="dash-card-label">Préstamos</p>
+      </div>
+
+      <div class="dash-card dash-card-light" onclick="window.location.href='deudas.html'">
+        <span class="dash-card-icon">+</span>
+        <p class="dash-card-label">Deudas</p>
+      </div>
+
+      <div class="dash-card dash-card-dark" onclick="window.location.href='movimientos.html'">
+        <span class="dash-card-icon">+</span>
+        <p class="dash-card-label">Movimientos</p>
+      </div>
+
+      <div class="dash-card dash-card-dark" onclick="window.location.href='notificaciones.html'">
+        <span class="dash-card-icon">+</span>
+        <p class="dash-card-label">Notificaciones <span id="notif-badge" style="display:none; background:#ef4444; color:white; border-radius:50%; padding:2px 8px; font-size:14px; margin-left:6px"></span></p>
+      </div>
+
+      <div class="dash-card dash-card-dark" onclick="window.location.href='gestionar-cuenta.html'">
+        <span class="dash-card-icon">+</span>
+        <p class="dash-card-label">Gestionar cuenta</p>
+      </div>
+
+      <div class="dash-card dash-card-dark" id="btn-cerrar-sesion">
+        <span class="dash-card-icon">+</span>
+        <p class="dash-card-label">Cerrar sesión</p>
+      </div>
+
+      <div class="dash-card dash-card-dark dash-perfil">
+        <span class="dash-perfil-icon">👤</span>
+        <p id="dash-nombre" class="dash-perfil-nombre">Cargando...</p>
+        <p id="dash-cuenta" class="dash-perfil-cuenta">Número de cuenta: —</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module" src="dashboard.js"></script>
+
+</body>
+</html>

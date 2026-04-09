@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>Z-Pay | Pagar Sueldos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+      <span class="header-home" onclick="window.location.href='admin-dashboard.html'">🏠</span>
+      <h1 class="header-title">PAGAR SUELDOS</h1>
+      <h1 class="logo header-logo"><span class="logo-z">Z</span>-Pay</h1>
+    </div>
+    <div class="header-bar"></div>
+
+    <!-- CONTENIDO -->
+    <div class="admin-content">
+
+      <div class="admin-card">
+        <h2 class="admin-card-title">Jugadores con sueldo asignado</h2>
+        <p style="color:#555; margin-bottom:20px">Al apretar PAGAR SUELDOS se acreditará el sueldo de cada jugador automáticamente.</p>
+        <button class="btn-acreditar" style="padding: 14px 40px; font-size:16px" onclick="pagarSueldos()">💰 PAGAR SUELDOS</button>
+        <p id="msg-sueldos" class="admin-msg" style="margin-top:12px"></p>
+      </div>
+
+      <div class="admin-tabla-container">
+        <table class="admin-tabla">
+          <thead>
+            <tr>
+              <th>ID PlayStation</th>
+              <th>Nombre</th>
+              <th>N° Cuenta</th>
+              <th>Sueldo U$D</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-sueldos">
+            <tr><td colspan="4">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module" src="sueldos-admin.js"></script>
+
+</body>
+</html>
