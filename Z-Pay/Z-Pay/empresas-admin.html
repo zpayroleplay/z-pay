@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Z-Pay | Empresas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="page">
+
+    <div class="header">
+      <span class="header-home" onclick="window.location.href='admin-dashboard.html'">🏠</span>
+      <h1 class="header-title">EMPRESAS</h1>
+      <h1 class="logo header-logo"><span class="logo-z">Z</span>-Pay</h1>
+    </div>
+    <div class="header-bar"></div>
+
+    <div class="admin-content">
+
+      <div class="admin-card">
+        <h2 class="admin-card-title">Registrar nueva empresa</h2>
+        <div class="admin-form">
+          <input type="text" id="emp-nombre" placeholder="Nombre de la empresa" />
+          <input type="text" id="emp-rubro" placeholder="Rubro" />
+          <input type="text" id="emp-alias" placeholder="Alias (ej: iStore)" />
+          <input type="password" id="emp-password" placeholder="Contraseña" />
+          <select id="emp-owner" class="admin-select">
+            <option value="">Seleccioná el gerente</option>
+          </select>
+          <button class="btn-acreditar" onclick="crearEmpresa()">REGISTRAR</button>
+        </div>
+        <p id="msg-empresa" class="admin-msg"></p>
+      </div>
+
+      <div class="admin-tabla-container">
+        <table class="admin-tabla">
+          <thead>
+            <tr>
+              <th>Empresa</th>
+              <th>Rubro</th>
+              <th>N° Cuenta</th>
+              <th>Alias</th>
+              <th>Gerente</th>
+              <th>Saldo U$D</th>
+              <th>Acreditar</th>
+              <th>Retirar</th>
+              <th>Eliminar</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-empresas">
+            <tr><td colspan="9">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="modal-overlay" class="modal-overlay" style="display:none">
+    <div class="modal-box">
+      <h2 id="modal-titulo" class="modal-titulo"></h2>
+      <p id="modal-subtitulo" class="modal-subtitulo"></p>
+      <input type="number" id="modal-monto" class="modal-input" placeholder="Monto U$D" min="0" style="display:none" />
+      <div class="modal-botones">
+        <button id="modal-confirmar" class="btn-acreditar modal-btn">CONFIRMAR</button>
+        <button class="btn-retirar modal-btn" onclick="cerrarModal()">CANCELAR</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="empresas-admin.js"></script>
+
+</body>
+</html>

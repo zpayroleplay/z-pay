@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>Z-Pay | Panel de Staff</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="dashboard">
+
+    <!-- LOGO -->
+    <h1 class="logo dash-logo"><span class="logo-z">Z</span>-Pay</h1>
+    <p class="admin-dash-bienvenida">Bienvenido, <span id="admin-nombre"></span> 👋</p>
+
+    <!-- GRILLA -->
+    <div class="admin-dash-grid">
+
+      <div class="admin-dash-card admin-dash-azul" onclick="window.location.href='admin.html'">
+        <span class="admin-dash-icon">💰</span>
+        <p class="admin-dash-label">Administrar Saldos</p>
+        <p class="admin-dash-desc">Acreditá, retirá y creá usuarios</p>
+      </div>
+
+      <div class="admin-dash-card admin-dash-azul" onclick="window.location.href='prestamos-admin.html'">
+        <span class="admin-dash-icon">📋</span>
+        <p class="admin-dash-label">Solicitudes de Préstamos</p>
+        <p class="admin-dash-desc">Aprobá o rechazá préstamos pendientes</p>
+      </div>
+
+      <div class="admin-dash-card admin-dash-oscuro" onclick="window.location.href='sueldos-admin.html'">
+        <span class="admin-dash-icon">💼</span>
+        <p class="admin-dash-label">Pagar Sueldos</p>
+        <p class="admin-dash-desc">Acreditá sueldos a todos los jugadores</p>
+      </div>
+
+      <div class="admin-dash-card admin-dash-azul" onclick="window.location.href='clientes-admin.html'">
+  <span class="admin-dash-icon">👥</span>
+  <p class="admin-dash-label">Clientes</p>
+  <p class="admin-dash-desc">Gestioná y eliminá clientes</p>
+</div>
+<div class="admin-dash-card admin-dash-azul" onclick="window.location.href='prestamos-presencial.html'">
+  <span class="admin-dash-icon">🏦</span>
+  <p class="admin-dash-label">Préstamo Presencial</p>
+  <p class="admin-dash-desc">Asigná préstamos directamente a clientes</p>
+</div>
+<div class="admin-dash-card admin-dash-azul" onclick="window.location.href='empresas-admin.html'">
+  <span class="admin-dash-icon">🏢</span>
+  <p class="admin-dash-label">Empresas</p>
+  <p class="admin-dash-desc">Registrá y gestioná las empresas del servidor</p>
+</div>
+<div class="admin-dash-card admin-dash-oscuro" onclick="cerrarSesion()">
+        <span class="admin-dash-icon">🚪</span>
+        <p class="admin-dash-label">Cerrar Sesión</p>
+        <p class="admin-dash-desc">Salir del panel de staff</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const userData = localStorage.getItem('zpay_user')
+    if (!userData) window.location.href = 'login.html'
+
+    const user = JSON.parse(userData)
+    if (user.rol !== 'admin') window.location.href = 'dashboard.html'
+
+    document.getElementById('admin-nombre').textContent = user.nombre
+
+    function cerrarSesion() {
+      localStorage.removeItem('zpay_user')
+      window.location.href = 'login.html'
+    }
+  </script>
+
+</body>
+</html>

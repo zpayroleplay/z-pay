@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Z-Pay | Gestionar Cuenta</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+      <span class="header-home" onclick="window.location.href='dashboard.html'">🏠</span>
+      <h1 class="header-title">GESTIONAR CUENTA</h1>
+      <h1 class="logo header-logo"><span class="logo-z">Z</span>-Pay</h1>
+    </div>
+    <div class="header-bar"></div>
+
+    <!-- CONTENIDO -->
+    <div class="gestionar-content">
+
+      <!-- CAMBIAR CONTRASEÑA -->
+      <div class="gestionar-columna">
+        <p class="gestionar-seccion-titulo">Cambiar contraseña</p>
+
+        <div class="transferencia-campo">
+          <label>Nueva contraseña:</label>
+          <input type="password" id="nueva-password" placeholder="Nueva contraseña" />
+        </div>
+
+        <div class="transferencia-campo">
+          <label>Repetir contraseña:</label>
+          <input type="password" id="repetir-password" placeholder="Repetí la contraseña" />
+        </div>
+
+        <p id="gestionar-msg" class="admin-msg"></p>
+        <button class="transfer-btn" onclick="cambiarPassword()">CONFIRMAR</button>
+      </div>
+
+      <!-- CAMBIAR ALIAS -->
+      <div class="gestionar-columna">
+        <p class="gestionar-seccion-titulo">Cambiar alias</p>
+
+        <div class="transferencia-campo">
+          <label>Alias actual:</label>
+          <div class="gestionar-alias-actual" id="alias-actual">Cargando...</div>
+        </div>
+
+        <div class="transferencia-campo">
+          <label>Nuevo alias:</label>
+          <input type="text" id="nuevo-alias" placeholder="Ej: Juan_Perez" />
+        </div>
+
+        <p id="alias-msg" class="admin-msg"></p>
+        <button class="transfer-btn" onclick="cambiarAlias()">CONFIRMAR</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module" src="gestionar-cuenta.js"></script>
+
+</body>
+</html>

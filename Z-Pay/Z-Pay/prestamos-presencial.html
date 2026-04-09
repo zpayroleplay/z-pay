@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Z-Pay | Préstamo Presencial</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+      <span class="header-home" onclick="window.location.href='admin-dashboard.html'">🏠</span>
+      <h1 class="header-title">PRÉSTAMO PRESENCIAL</h1>
+      <h1 class="logo header-logo"><span class="logo-z">Z</span>-Pay</h1>
+    </div>
+    <div class="header-bar"></div>
+
+    <!-- CONTENIDO -->
+    <div class="admin-content">
+      <div class="admin-card">
+        <h2 class="admin-card-title">Asignar préstamo a un cliente</h2>
+
+        <div class="prestamo-presencial-form">
+
+          <div class="transferencia-campo">
+            <label>Buscar cliente (alias o N° cuenta):</label>
+            <div style="display:flex; gap:12px">
+              <input type="text" id="buscar-cliente" placeholder="Ej: Pedro_Spinelli" style="flex:1" />
+              <button class="btn-acreditar" style="height:55px; padding: 0 24px" onclick="buscarCliente()">BUSCAR</button>
+            </div>
+          </div>
+
+          <!-- INFO DEL CLIENTE -->
+          <div id="cliente-info" class="prestamo-presencial-info" style="display:none">
+            <div class="prestamo-presencial-dato">
+              <span class="prestamo-presencial-label">Titular:</span>
+              <span id="info-nombre" class="prestamo-presencial-valor"></span>
+            </div>
+            <div class="prestamo-presencial-dato">
+              <span class="prestamo-presencial-label">N° Cuenta:</span>
+              <span id="info-cuenta" class="prestamo-presencial-valor"></span>
+            </div>
+            <div class="prestamo-presencial-dato">
+              <span class="prestamo-presencial-label">Sueldo:</span>
+              <span id="info-sueldo" class="prestamo-presencial-valor"></span>
+            </div>
+            <div class="prestamo-presencial-dato">
+              <span class="prestamo-presencial-label">Franja:</span>
+              <span id="info-franja" class="prestamo-presencial-valor" style="color:#FFD400"></span>
+            </div>
+            <div class="prestamo-presencial-dato">
+              <span class="prestamo-presencial-label">Máximo préstamo:</span>
+              <span id="info-maximo" class="prestamo-presencial-valor"></span>
+            </div>
+            <div class="prestamo-presencial-dato">
+              <span class="prestamo-presencial-label">Cuotas mínimas:</span>
+              <span id="info-cuotas-min" class="prestamo-presencial-valor"></span>
+            </div>
+          </div>
+
+          <!-- FORMULARIO -->
+          <div id="prestamo-form-presencial" style="display:none">
+            <div class="transferencia-campo">
+              <label>Monto U$D:</label>
+              <input type="number" id="pp-monto" placeholder="0.00" min="0" />
+            </div>
+            <div class="transferencia-campo">
+              <label>Cuotas:</label>
+              <input type="number" id="pp-cuotas" placeholder="Cantidad de cuotas" min="1" />
+            </div>
+            <p id="pp-msg" class="admin-msg"></p>
+            <button class="btn-acreditar" style="padding: 14px 40px; font-size:16px; margin-top:8px" onclick="asignarPrestamo()">APROBAR PRÉSTAMO</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="prestamos-presencial.js"></script>
+
+</body>
+</html>
