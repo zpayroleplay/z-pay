@@ -8,7 +8,6 @@ if (user.rol !== 'admin' && user.rol !== 'superadmin') window.location.href = 'd
 let accionActual = null
 let empresaIdActual = null
 
-// ===== CARGAR GERENTES EN EL SELECT =====
 async function cargarGerentes() {
   const { data: usuarios } = await supabase
     .from('users')
@@ -24,7 +23,6 @@ async function cargarGerentes() {
   }
 }
 
-// ===== CARGAR EMPRESAS =====
 async function cargarEmpresas() {
   const tbody = document.getElementById('tabla-empresas')
 
@@ -38,7 +36,6 @@ async function cargarEmpresas() {
     return
   }
 
-  // Filtramos el tesoro del banco
   const lista = empresas.filter(e => e.alias !== 'Tesoro_ZPay')
 
   if (lista.length === 0) {
@@ -65,7 +62,6 @@ async function cargarEmpresas() {
   }
 }
 
-// ===== MODAL =====
 window.cerrarModal = function () {
   document.getElementById('modal-overlay').style.display = 'none'
   document.getElementById('modal-monto').style.display = 'none'
@@ -162,7 +158,6 @@ async function confirmarModal() {
   cargarEmpresas()
 }
 
-// ===== CREAR EMPRESA =====
 window.crearEmpresa = async function () {
   const nombre = document.getElementById('emp-nombre').value.trim()
   const rubro = document.getElementById('emp-rubro').value.trim()
@@ -179,7 +174,6 @@ window.crearEmpresa = async function () {
     return
   }
 
-  // Generamos número de cuenta para la empresa
   const numeroCuenta = Math.floor(3000000000 + Math.random() * 6999999999).toString()
 
   const { error } = await supabase.from('companies').insert({
