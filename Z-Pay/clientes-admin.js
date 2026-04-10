@@ -1,5 +1,11 @@
 import { supabase } from './supabase.js'
 
+const userData = localStorage.getItem('zpay_user')
+if (!userData) window.location.href = 'login.html'
+
+const user = JSON.parse(userData)
+if (user.rol !== 'admin' && user.rol !== 'superadmin') window.location.href = 'dashboard.html'
+
 async function cargarClientes() {
   const tbody = document.getElementById('tabla-clientes')
 
@@ -21,17 +27,18 @@ async function cargarClientes() {
   tbody.innerHTML = ''
 
   for (const u of usuarios) {
+    const esAdmin = u.rol === 'admin' || u.rol === 'superadmin'
+    const badge = esAdmin ? '<span class="badge-admin">ADMIN</span>' : ''
     const fila = document.createElement('tr')
     fila.innerHTML = `
       <td>${u.username}</td>
-      <td>${u.nombre} ${u.apellido} ${u.rol === 'admin' ? '<span class="badge-admin">ADMIN</span>' : ''}</td>
+      <td>${u.nombre} ${u.apellido} ${badge}</td>
       <td><button class="btn-retirar" onclick="confirmarEliminar('${u.id}', '${u.username}')">ELIMINAR</button></td>
     `
     tbody.appendChild(fila)
   }
 }
 
-// ===== MODAL =====
 window.cerrarModal = function () {
   document.getElementById('modal-overlay').style.display = 'none'
 }
@@ -59,24 +66,12 @@ async function eliminarUsuario(userId) {
     await supabase.from('transactions')
       .delete()
       .or(`cuenta_origen.eq.${cuenta.numero_cuenta},cuenta_destino.eq.${cuenta.numero_cuenta}`)
-
-    await supabase.from('loans')
-      .delete()
-      .eq('numero_cuenta', cuenta.numero_cuenta)
-
-    await supabase.from('debts')
-      .delete()
-      .eq('numero_cuenta', cuenta.numero_cuenta)
-
-    await supabase.from('accounts')
-      .delete()
-      .eq('id', cuenta.id)
+    await supabase.from('loans').delete().eq('numero_cuenta', cuenta.numero_cuenta)
+    await supabase.from('debts').delete().eq('numero_cuenta', cuenta.numero_cuenta)
+    await supabase.from('accounts').delete().eq('id', cuenta.id)
   }
 
-  await supabase.from('users')
-    .delete()
-    .eq('id', userId)
-
+  await supabase.from('users').delete().eq('id', userId)
   cargarClientes()
 }
 
