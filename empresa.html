@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Z-Pay | Mi Empresa</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="page">
+
+    <div class="header">
+      <span class="header-home" onclick="window.location.href='dashboard.html'">🏠</span>
+      <div class="header-center">
+        <h1 class="header-title" id="empresa-titulo">Z-Pay Empresas</h1>
+        <p class="header-subtitle" id="empresa-rubro"></p>
+      </div>
+      <h1 class="logo header-logo"><span class="logo-z">Z</span>-Pay</h1>
+    </div>
+    <div class="header-bar"></div>
+
+    <!-- LOGIN DE EMPRESA -->
+    <div id="empresa-login" class="empresa-login">
+      <div class="empresa-login-box">
+        <h2 class="empresa-login-titulo">Acceso empresarial</h2>
+        <p class="empresa-login-subtitulo">Ingresá la contraseña de tu empresa</p>
+        <input type="password" id="empresa-password" placeholder="Contraseña" class="empresa-login-input" />
+        <p id="empresa-login-msg" class="admin-msg"></p>
+        <button class="transfer-btn" onclick="verificarPassword()">INGRESAR</button>
+      </div>
+    </div>
+
+    <!-- PANEL DE EMPRESA (oculto hasta login) -->
+    <div id="empresa-panel" style="display:none">
+      <div class="admin-content">
+
+        <!-- SALDO -->
+        <div class="admin-card empresa-saldo-card">
+          <div>
+            <p class="empresa-saldo-label">Saldo de la empresa</p>
+            <p id="empresa-saldo" class="empresa-saldo-monto">U$D 0.00</p>
+          </div>
+          <div>
+            <p class="empresa-saldo-label">N° Cuenta</p>
+            <p id="empresa-cuenta" class="empresa-saldo-monto" style="font-size:20px"></p>
+          </div>
+        </div>
+
+        <!-- SOLICITAR PAGO A EMPLEADO -->
+        <div class="admin-card">
+          <h2 class="admin-card-title">Solicitar pago a empleado</h2>
+          <div class="admin-form">
+            <select id="pago-empleado" class="admin-select">
+              <option value="">Seleccioná el empleado</option>
+            </select>
+            <input type="number" id="pago-monto" placeholder="Monto U$D" min="0" />
+            <input type="text" id="pago-concepto" placeholder="Concepto (ej: Sueldo semanal)" />
+            <button class="btn-acreditar" onclick="solicitarPago()">SOLICITAR</button>
+          </div>
+          <p id="pago-msg" class="admin-msg"></p>
+        </div>
+
+        <!-- MOVIMIENTOS -->
+        <div class="admin-tabla-container">
+          <h2 class="admin-card-title" style="padding: 16px 24px 0">Movimientos de la empresa</h2>
+          <table class="admin-tabla">
+            <thead>
+              <tr>
+                <th>Concepto</th>
+                <th>U$D</th>
+                <th>Fecha</th>
+              </tr>
+            </thead>
+            <tbody id="empresa-movimientos">
+              <tr><td colspan="3">Cargando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module" src="empresa.js"></script>
+
+</body>
+</html>
