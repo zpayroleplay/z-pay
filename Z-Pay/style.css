@@ -891,3 +891,61 @@ body {
   text-align: center;
   margin-top: 40px;
 }
+/* ===== EMPRESA ===== */
+.empresa-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 60px;
+}
+
+.empresa-login-box {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.empresa-login-titulo {
+  color: #0b3dff;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.empresa-login-subtitulo {
+  color: #555;
+  font-size: 14px;
+}
+
+.empresa-login-input {
+  height: 50px;
+  border-radius: 12px;
+  border: 2px solid #0b3dff;
+  padding: 0 16px;
+  font-size: 16px;
+}
+
+.empresa-saldo-card {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+}
+
+.empresa-saldo-label {
+  color: #888;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.empresa-saldo-monto {
+  color: #0b3dff;
+  font-size: 32px;
+  font-weight: 800;
+  margin-top: 4px;
+}

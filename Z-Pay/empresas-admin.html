@@ -25,12 +25,20 @@
           <input type="text" id="emp-rubro" placeholder="Rubro" />
           <input type="text" id="emp-alias" placeholder="Alias (ej: iStore)" />
           <input type="password" id="emp-password" placeholder="Contraseña" />
+          <input type="number" id="emp-gastos" placeholder="Gastos operativos %" min="0" max="100" />
           <select id="emp-owner" class="admin-select">
             <option value="">Seleccioná el gerente</option>
           </select>
           <button class="btn-acreditar" onclick="crearEmpresa()">REGISTRAR</button>
         </div>
         <p id="msg-empresa" class="admin-msg"></p>
+      </div>
+
+      <div class="admin-card">
+        <h2 class="admin-card-title">Cobrar gastos operativos</h2>
+        <p style="color:#555; margin-bottom:16px">Descuenta el porcentaje de gastos operativos de los ingresos de cada empresa de los últimos 7 días.</p>
+        <button class="btn-retirar" style="padding:14px 40px; font-size:16px" onclick="cobrarGastos()">COBRAR GASTOS</button>
+        <p id="msg-gastos" class="admin-msg" style="margin-top:12px"></p>
       </div>
 
       <div class="admin-tabla-container">
@@ -40,16 +48,17 @@
               <th>Empresa</th>
               <th>Rubro</th>
               <th>N° Cuenta</th>
-              <th>Alias</th>
               <th>Gerente</th>
               <th>Saldo U$D</th>
+              <th>Gastos Op. %</th>
               <th>Acreditar</th>
               <th>Retirar</th>
+              <th>Editar %</th>
               <th>Eliminar</th>
             </tr>
           </thead>
           <tbody id="tabla-empresas">
-            <tr><td colspan="9">Cargando...</td></tr>
+            <tr><td colspan="10">Cargando...</td></tr>
           </tbody>
         </table>
       </div>
