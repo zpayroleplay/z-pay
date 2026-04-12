@@ -45,7 +45,30 @@
             <p id="empresa-cuenta" class="empresa-saldo-monto" style="font-size:20px"></p>
           </div>
         </div>
+        
+<!-- GESTIONAR EMPLEADOS -->
+<div class="admin-card">
+  <h2 class="admin-card-title">Gestionar empleados</h2>
 
+  <div class="admin-form" style="margin-bottom: 20px">
+    <input type="text" id="nuevo-empleado" placeholder="Alias o N° cuenta del empleado" style="flex:1" />
+    <button class="btn-acreditar" onclick="agregarEmpleado()">AGREGAR</button>
+  </div>
+  <p id="empleado-msg" class="admin-msg"></p>
+
+  <table class="admin-tabla" style="margin-top: 16px">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>N° Cuenta</th>
+        <th>Quitar</th>
+      </tr>
+    </thead>
+    <tbody id="lista-empleados">
+      <tr><td colspan="3">Cargando...</td></tr>
+    </tbody>
+  </table>
+</div>
         <!-- SOLICITAR PAGO A EMPLEADO -->
         <div class="admin-card">
           <h2 class="admin-card-title">Solicitar pago a empleado</h2>
