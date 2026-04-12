@@ -46,6 +46,15 @@ window.verificarPassword = async function () {
 }
 
 async function cargarPanel() {
+  // Recargamos datos de la empresa para tener el saldo actualizado
+  const { data: empresa } = await supabase
+    .from('companies')
+    .select('*')
+    .eq('id', empresaData.id)
+    .single()
+
+  empresaData = empresa
+
   document.getElementById('empresa-saldo').textContent = `U$D ${parseFloat(empresaData.saldo).toFixed(2)}`
   document.getElementById('empresa-cuenta').textContent = empresaData.numero_cuenta
 
@@ -54,18 +63,36 @@ async function cargarPanel() {
 }
 
 async function cargarEmpleados() {
+  const tbody = document.getElementById('lista-empleados')
+  const select = document.getElementById('pago-empleado')
+
   const { data: empleados } = await supabase
     .from('company_employees')
-    .select('*, users(nombre, apellido, id)')
+    .select('*, users(id, nombre, apellido), accounts(numero_cuenta)')
     .eq('company_id', empresaData.id)
 
-  const select = document.getElementById('pago-empleado')
-  select.innerHTML = '<option value="">Seleccioná el empleado</option>'
+  // Actualizar tabla de empleados
+  if (!empleados || empleados.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="3">No hay empleados registrados.</td></tr>'
+  } else {
+    tbody.innerHTML = ''
+    for (const e of empleados) {
+      const fila = document.createElement('tr')
+      fila.innerHTML = `
+        <td>${e.users?.nombre ?? '—'} ${e.users?.apellido ?? ''}</td>
+        <td>${e.accounts?.numero_cuenta ?? '—'}</td>
+        <td><button class="btn-retirar" onclick="quitarEmpleado('${e.id}')">QUITAR</button></td>
+      `
+      tbody.appendChild(fila)
+    }
+  }
 
+  // Actualizar select de pagos
+  select.innerHTML = '<option value="">Seleccioná el empleado</option>'
   for (const e of empleados ?? []) {
     const option = document.createElement('option')
     option.value = e.user_id
-    option.textContent = `${e.users.nombre} ${e.users.apellido}`
+    option.textContent = `${e.users?.nombre} ${e.users?.apellido}`
     select.appendChild(option)
   }
 }
@@ -101,6 +128,80 @@ async function cargarMovimientos() {
     `
     tbody.appendChild(fila)
   }
+}
+
+window.agregarEmpleado = async function () {
+  const busqueda = document.getElementById('nuevo-empleado').value.trim()
+  const msg = document.getElementById('empleado-msg')
+
+  msg.style.color = 'red'
+  msg.textContent = ''
+
+  if (!busqueda) {
+    msg.textContent = 'Ingresá un alias o número de cuenta.'
+    return
+  }
+
+  // Buscar cuenta por alias o número
+  let { data: cuenta } = await supabase
+    .from('accounts')
+    .select('id, user_id, numero_cuenta, users(nombre, apellido)')
+    .eq('alias', busqueda)
+    .single()
+
+  if (!cuenta) {
+    const { data: porCuenta } = await supabase
+      .from('accounts')
+      .select('id, user_id, numero_cuenta, users(nombre, apellido)')
+      .eq('numero_cuenta', busqueda)
+      .single()
+    cuenta = porCuenta
+  }
+
+  if (!cuenta) {
+    msg.textContent = 'No se encontró ningún usuario con ese alias o número de cuenta.'
+    return
+  }
+
+  // Verificar que no sea el dueño
+  if (cuenta.user_id === user.id) {
+    msg.textContent = 'No podés agregarte a vos mismo como empleado.'
+    return
+  }
+
+  // Verificar que no esté ya agregado
+  const { data: yaExiste } = await supabase
+    .from('company_employees')
+    .select('id')
+    .eq('company_id', empresaData.id)
+    .eq('user_id', cuenta.user_id)
+    .single()
+
+  if (yaExiste) {
+    msg.textContent = 'Ese usuario ya es empleado de la empresa.'
+    return
+  }
+
+  const { error } = await supabase.from('company_employees').insert({
+    company_id: empresaData.id,
+    user_id: cuenta.user_id
+  })
+
+  if (error) {
+    msg.textContent = 'Error al agregar empleado.'
+    return
+  }
+
+  msg.style.color = 'green'
+  msg.textContent = `✅ ${cuenta.users?.nombre} ${cuenta.users?.apellido} agregado como empleado.`
+  document.getElementById('nuevo-empleado').value = ''
+
+  cargarEmpleados()
+}
+
+window.quitarEmpleado = async function (empleadoId) {
+  await supabase.from('company_employees').delete().eq('id', empleadoId)
+  cargarEmpleados()
 }
 
 window.solicitarPago = async function () {
