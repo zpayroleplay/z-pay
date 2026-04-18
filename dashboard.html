@@ -71,6 +71,18 @@
   </div>
 
   <script type="module" src="dashboard.js"></script>
-
+<!-- POPUP DE COBRO -->
+<div id="cobro-popup" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <h2 class="modal-titulo">💳 Pago pendiente</h2>
+    <p id="cobro-popup-empresa" class="modal-subtitulo"></p>
+    <p id="cobro-popup-concepto" style="color:#333; font-size:15px; text-align:center"></p>
+    <p id="cobro-popup-monto" style="color:#0b3dff; font-size:28px; font-weight:800; text-align:center"></p>
+    <div class="modal-botones">
+      <button id="cobro-popup-aceptar" class="btn-acreditar modal-btn">ACEPTAR</button>
+      <button id="cobro-popup-rechazar" class="btn-retirar modal-btn">RECHAZAR</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>

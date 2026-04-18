@@ -46,6 +46,18 @@
           </div>
         </div>
 
+        <!-- GENERAR COBRO -->
+        <div class="admin-card">
+          <h2 class="admin-card-title">Generar cobro a cliente</h2>
+          <div class="admin-form">
+            <input type="text" id="cobro-cliente" placeholder="Alias o N° cuenta del cliente" style="flex:1" />
+            <input type="number" id="cobro-monto" placeholder="Monto U$D" min="0" />
+            <input type="text" id="cobro-concepto" placeholder="Concepto (ej: Carga de nafta 50L)" style="flex:1" />
+            <button class="btn-acreditar" onclick="generarCobro()">COBRAR</button>
+          </div>
+          <p id="cobro-msg" class="admin-msg"></p>
+        </div>
+
         <!-- GESTIONAR EMPLEADOS -->
         <div class="admin-card">
           <h2 class="admin-card-title">Gestionar empleados</h2>
@@ -106,11 +118,6 @@
 
   </div>
 
-  <script>
-    function verificarPassword() {
-      document.querySelector('.transfer-btn').dispatchEvent(new Event('click-interno'))
-    }
-  </script>
   <script type="module" src="empresa.js"></script>
 
 </body>

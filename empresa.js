@@ -246,4 +246,59 @@ window.solicitarPago = async function () {
   document.getElementById('pago-concepto').value = ''
 }
 
+window.generarCobro = async function () {
+  const busqueda = document.getElementById('cobro-cliente').value.trim()
+  const monto = parseFloat(document.getElementById('cobro-monto').value)
+  const concepto = document.getElementById('cobro-concepto').value.trim()
+  const msg = document.getElementById('cobro-msg')
+
+  msg.style.color = 'red'
+  msg.textContent = ''
+
+  if (!busqueda || isNaN(monto) || monto <= 0 || !concepto) {
+    msg.textContent = 'Completá todos los campos correctamente.'
+    return
+  }
+
+  let { data: cuenta } = await supabase
+    .from('accounts')
+    .select('numero_cuenta, users(nombre, apellido)')
+    .eq('alias', busqueda)
+    .single()
+
+  if (!cuenta) {
+    const { data: porCuenta } = await supabase
+      .from('accounts')
+      .select('numero_cuenta, users(nombre, apellido)')
+      .eq('numero_cuenta', busqueda)
+      .single()
+    cuenta = porCuenta
+  }
+
+  if (!cuenta) {
+    msg.textContent = 'No se encontró ningún cliente con ese alias o número de cuenta.'
+    return
+  }
+
+  const { error } = await supabase.from('cobros').insert({
+    company_id: empresaData.id,
+    numero_cuenta_cliente: cuenta.numero_cuenta,
+    monto,
+    concepto,
+    estado: 'pendiente'
+  })
+
+  if (error) {
+    msg.textContent = 'Error al generar el cobro.'
+    return
+  }
+
+  msg.style.color = 'green'
+  msg.textContent = `✅ Cobro enviado a ${cuenta.users?.nombre} ${cuenta.users?.apellido}.`
+
+  document.getElementById('cobro-cliente').value = ''
+  document.getElementById('cobro-monto').value = ''
+  document.getElementById('cobro-concepto').value = ''
+}
+
 init()
