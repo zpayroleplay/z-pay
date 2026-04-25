@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Z-Pay | Mis cobros</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+
+    <div class="header">
+      <span class="header-home" onclick="window.location.href='dashboard.html'">🏠</span>
+      <h1 class="header-title">MIS COBROS</h1>
+      <span class="header-logo logo"><span class="logo-z">Z</span>-Pay</span>
+    </div>
+    <div class="header-bar"></div>
+
+    <div class="admin-content">
+      <div class="admin-tabla-container">
+        <table class="admin-tabla">
+          <thead>
+            <tr>
+              <th>Cliente (N° cuenta)</th>
+              <th>Monto U$D</th>
+              <th>Concepto</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody id="cobros-tbody">
+            <tr><td colspan="5">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+  <script type="module" src="empleado-cobros.js"></script>
+</body>
+</html>
