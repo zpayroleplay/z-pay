@@ -47,9 +47,47 @@ async function cargarPerfil() {
     .single()
 
   if (empresa) {
-    const tarjetaEmpresa = document.getElementById('tarjeta-empresa')
-    tarjetaEmpresa.style.display = 'flex'
+    document.getElementById('tarjeta-empresa').style.display = 'flex'
     document.getElementById('empresa-nombre').textContent = empresa.nombre
+
+    // El gerente también accede a la sección Trabajo
+    localStorage.setItem('zpay_empleo', JSON.stringify({
+      company_id: empresa.id,
+      empresa_nombre: empresa.nombre,
+      cargo: 'Gerente'
+    }))
+  }
+
+  // Verificamos si es empleado de alguna empresa
+  await verificarEmpleado()
+}
+
+async function verificarEmpleado() {
+  // Si ya se guardó empleo como gerente, lo usamos directamente
+  const empleoExistente = localStorage.getItem('zpay_empleo')
+  if (empleoExistente) {
+    const empleo = JSON.parse(empleoExistente)
+    document.getElementById('seccion-trabajo').style.display = 'block'
+    document.getElementById('trabajo-empresa-nombre').textContent = empleo.empresa_nombre
+    return
+  }
+
+  // Si no es gerente, verificamos si es empleado
+  const { data: empleo } = await supabase
+    .from('company_employees')
+    .select('cargo, company_id, companies(nombre)')
+    .eq('user_id', user.id)
+    .single()
+
+  if (empleo) {
+    document.getElementById('seccion-trabajo').style.display = 'block'
+    document.getElementById('trabajo-empresa-nombre').textContent = empleo.companies.nombre
+
+    localStorage.setItem('zpay_empleo', JSON.stringify({
+      company_id: empleo.company_id,
+      empresa_nombre: empleo.companies.nombre,
+      cargo: empleo.cargo
+    }))
   }
 }
 
@@ -113,7 +151,6 @@ async function verificarCobros(numeroCuenta) {
     document.getElementById('cobro-popup').style.display = 'none'
     cuentaActual.saldo = saldo - monto
 
-    // Si hay más cobros pendientes los mostramos
     await verificarCobros(numeroCuenta)
   }
 
@@ -126,6 +163,7 @@ async function verificarCobros(numeroCuenta) {
 
 document.getElementById('btn-cerrar-sesion').addEventListener('click', function () {
   localStorage.removeItem('zpay_user')
+  localStorage.removeItem('zpay_empleo')
   window.location.href = 'login.html'
 })
 

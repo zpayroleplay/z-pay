@@ -39,10 +39,12 @@ async function cargarNotificaciones() {
   lista.innerHTML = ''
 
   for (const n of notifs) {
-    const fecha = new Date(n.created_at).toLocaleDateString('es-UY', {
-      day: '2-digit', month: '2-digit', year: 'numeric',
-      hour: '2-digit', minute: '2-digit'
-    })
+    // ✅ Después
+const fecha = new Date(n.created_at).toLocaleDateString('es-UY', {
+  day: '2-digit', month: '2-digit', year: 'numeric',
+  hour: '2-digit', minute: '2-digit',
+  timeZone: 'America/Montevideo'
+})
 
     const icono = iconos[n.tipo] ?? '🔔'
     const div = document.createElement('div')
