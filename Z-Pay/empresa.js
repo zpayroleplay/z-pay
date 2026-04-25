@@ -46,7 +46,6 @@ window.verificarPassword = async function () {
 }
 
 async function cargarPanel() {
-  // Recargamos datos de la empresa para tener el saldo actualizado
   const { data: empresa } = await supabase
     .from('companies')
     .select('*')
@@ -54,7 +53,6 @@ async function cargarPanel() {
     .single()
 
   empresaData = empresa
-
   document.getElementById('empresa-saldo').textContent = `U$D ${parseFloat(empresaData.saldo).toFixed(2)}`
   document.getElementById('empresa-cuenta').textContent = empresaData.numero_cuenta
 
@@ -71,15 +69,15 @@ async function cargarEmpleados() {
     .select('*, users(id, nombre, apellido), accounts(numero_cuenta)')
     .eq('company_id', empresaData.id)
 
-  // Actualizar tabla de empleados
   if (!empleados || empleados.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="3">No hay empleados registrados.</td></tr>'
+    tbody.innerHTML = '<tr><td colspan="4">No hay empleados registrados.</td></tr>'
   } else {
     tbody.innerHTML = ''
     for (const e of empleados) {
       const fila = document.createElement('tr')
       fila.innerHTML = `
         <td>${e.users?.nombre ?? '—'} ${e.users?.apellido ?? ''}</td>
+        <td>${e.cargo ?? 'Empleado'}</td>
         <td>${e.accounts?.numero_cuenta ?? '—'}</td>
         <td><button class="btn-retirar" onclick="quitarEmpleado('${e.id}')">QUITAR</button></td>
       `
@@ -87,12 +85,11 @@ async function cargarEmpleados() {
     }
   }
 
-  // Actualizar select de pagos
   select.innerHTML = '<option value="">Seleccioná el empleado</option>'
   for (const e of empleados ?? []) {
     const option = document.createElement('option')
     option.value = e.user_id
-    option.textContent = `${e.users?.nombre} ${e.users?.apellido}`
+    option.textContent = `${e.users?.nombre} ${e.users?.apellido} (${e.cargo ?? 'Empleado'})`
     select.appendChild(option)
   }
 }
@@ -132,6 +129,7 @@ async function cargarMovimientos() {
 
 window.agregarEmpleado = async function () {
   const busqueda = document.getElementById('nuevo-empleado').value.trim()
+  const cargo = document.getElementById('nuevo-cargo').value.trim() || 'Empleado'
   const msg = document.getElementById('empleado-msg')
 
   msg.style.color = 'red'
@@ -142,7 +140,6 @@ window.agregarEmpleado = async function () {
     return
   }
 
-  // Buscar cuenta por alias o número
   let { data: cuenta } = await supabase
     .from('accounts')
     .select('id, user_id, numero_cuenta, users(nombre, apellido)')
@@ -163,13 +160,6 @@ window.agregarEmpleado = async function () {
     return
   }
 
-  // Verificar que no sea el dueño
-  if (cuenta.user_id === user.id) {
-    msg.textContent = 'No podés agregarte a vos mismo como empleado.'
-    return
-  }
-
-  // Verificar que no esté ya agregado
   const { data: yaExiste } = await supabase
     .from('company_employees')
     .select('id')
@@ -184,7 +174,8 @@ window.agregarEmpleado = async function () {
 
   const { error } = await supabase.from('company_employees').insert({
     company_id: empresaData.id,
-    user_id: cuenta.user_id
+    user_id: cuenta.user_id,
+    cargo: cargo
   })
 
   if (error) {
@@ -193,8 +184,9 @@ window.agregarEmpleado = async function () {
   }
 
   msg.style.color = 'green'
-  msg.textContent = `✅ ${cuenta.users?.nombre} ${cuenta.users?.apellido} agregado como empleado.`
+  msg.textContent = `✅ ${cuenta.users?.nombre} ${cuenta.users?.apellido} agregado como ${cargo}.`
   document.getElementById('nuevo-empleado').value = ''
+  document.getElementById('nuevo-cargo').value = ''
 
   cargarEmpleados()
 }
@@ -252,6 +244,61 @@ window.solicitarPago = async function () {
   document.getElementById('pago-empleado').value = ''
   document.getElementById('pago-monto').value = ''
   document.getElementById('pago-concepto').value = ''
+}
+
+window.generarCobro = async function () {
+  const busqueda = document.getElementById('cobro-cliente').value.trim()
+  const monto = parseFloat(document.getElementById('cobro-monto').value)
+  const concepto = document.getElementById('cobro-concepto').value.trim()
+  const msg = document.getElementById('cobro-msg')
+
+  msg.style.color = 'red'
+  msg.textContent = ''
+
+  if (!busqueda || isNaN(monto) || monto <= 0 || !concepto) {
+    msg.textContent = 'Completá todos los campos correctamente.'
+    return
+  }
+
+  let { data: cuenta } = await supabase
+    .from('accounts')
+    .select('numero_cuenta, users(nombre, apellido)')
+    .eq('alias', busqueda)
+    .single()
+
+  if (!cuenta) {
+    const { data: porCuenta } = await supabase
+      .from('accounts')
+      .select('numero_cuenta, users(nombre, apellido)')
+      .eq('numero_cuenta', busqueda)
+      .single()
+    cuenta = porCuenta
+  }
+
+  if (!cuenta) {
+    msg.textContent = 'No se encontró ningún cliente con ese alias o número de cuenta.'
+    return
+  }
+
+  const { error } = await supabase.from('cobros').insert({
+    company_id: empresaData.id,
+    numero_cuenta_cliente: cuenta.numero_cuenta,
+    monto,
+    concepto,
+    estado: 'pendiente'
+  })
+
+  if (error) {
+    msg.textContent = 'Error al generar el cobro.'
+    return
+  }
+
+  msg.style.color = 'green'
+  msg.textContent = `✅ Cobro enviado a ${cuenta.users?.nombre} ${cuenta.users?.apellido}.`
+
+  document.getElementById('cobro-cliente').value = ''
+  document.getElementById('cobro-monto').value = ''
+  document.getElementById('cobro-concepto').value = ''
 }
 
 init()

@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <!-- PANEL DE EMPRESA (oculto hasta login) -->
+    <!-- PANEL DE EMPRESA -->
     <div id="empresa-panel" style="display:none">
       <div class="admin-content">
 
@@ -46,29 +46,55 @@
           </div>
         </div>
 
+        <!-- GENERAR COBRO -->
+        <div class="admin-card">
+          <h2 class="admin-card-title">Generar cobro a cliente</h2>
+          <div class="admin-form">
+            <input type="text" id="cobro-cliente" placeholder="Alias o N° cuenta del cliente" style="flex:1" />
+            <input type="number" id="cobro-monto" placeholder="Monto U$D" min="0" />
+            <input type="text" id="cobro-concepto" placeholder="Concepto (ej: Carga de nafta 50L)" style="flex:1" />
+            <button class="btn-acreditar" onclick="generarCobro()">COBRAR</button>
+          </div>
+          <p id="cobro-msg" class="admin-msg"></p>
+        </div>
+
         <!-- GESTIONAR EMPLEADOS -->
-<div class="admin-card">
-  <h2 class="admin-card-title">Gestionar empleados</h2>
+        <div class="admin-card">
+          <h2 class="admin-card-title">Gestionar empleados</h2>
+          <div class="admin-form" style="margin-bottom: 20px">
+            <input type="text" id="nuevo-empleado" placeholder="Alias o N° cuenta del empleado" style="flex:1" />
+            <input type="text" id="nuevo-cargo" placeholder="Cargo (ej: Pistero)" style="flex:1" />
+            <button class="btn-acreditar" onclick="agregarEmpleado()">AGREGAR</button>
+          </div>
+          <p id="empleado-msg" class="admin-msg"></p>
+          <table class="admin-tabla" style="margin-top: 16px">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Cargo</th>
+                <th>N° Cuenta</th>
+                <th>Quitar</th>
+              </tr>
+            </thead>
+            <tbody id="lista-empleados">
+              <tr><td colspan="4">Cargando...</td></tr>
+            </tbody>
+          </table>
+        </div>
 
-  <div class="admin-form" style="margin-bottom: 20px">
-    <input type="text" id="nuevo-empleado" placeholder="Alias o N° cuenta del empleado" style="flex:1" />
-    <button class="btn-acreditar" onclick="agregarEmpleado()">AGREGAR</button>
-  </div>
-  <p id="empleado-msg" class="admin-msg"></p>
-
-  <table class="admin-tabla" style="margin-top: 16px">
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>N° Cuenta</th>
-        <th>Quitar</th>
-      </tr>
-    </thead>
-    <tbody id="lista-empleados">
-      <tr><td colspan="3">Cargando...</td></tr>
-    </tbody>
-  </table>
-</div>
+        <!-- SOLICITAR PAGO A EMPLEADO -->
+        <div class="admin-card">
+          <h2 class="admin-card-title">Solicitar pago a empleado</h2>
+          <div class="admin-form">
+            <select id="pago-empleado" class="admin-select">
+              <option value="">Seleccioná el empleado</option>
+            </select>
+            <input type="number" id="pago-monto" placeholder="Monto U$D" min="0" />
+            <input type="text" id="pago-concepto" placeholder="Concepto (ej: Sueldo semanal)" />
+            <button class="btn-acreditar" onclick="solicitarPago()">SOLICITAR</button>
+          </div>
+          <p id="pago-msg" class="admin-msg"></p>
+        </div>
 
         <!-- MOVIMIENTOS -->
         <div class="admin-tabla-container">

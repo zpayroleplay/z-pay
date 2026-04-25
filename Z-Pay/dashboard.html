@@ -68,9 +68,41 @@
       </div>
 
     </div>
+
+    <!-- SECCIÓN TRABAJO (oculta por defecto) -->
+    <div id="seccion-trabajo" style="display:none; width:100%">
+      <p class="admin-dash-bienvenida" style="margin-top:0; margin-bottom:16px; font-size:18px; letter-spacing:1px">
+        💼 TRABAJO — <span id="trabajo-empresa-nombre"></span>
+      </p>
+      <div class="admin-dash-grid" style="max-width:500px">
+        <div class="dash-card dash-card-dark" onclick="window.location.href='empleado-cobrar.html'">
+          <span class="dash-card-icon">+</span>
+          <p class="dash-card-label">Cobrar a cliente</p>
+        </div>
+        <div class="dash-card dash-card-light" onclick="window.location.href='empleado-cobros.html'">
+          <span class="dash-card-icon">+</span>
+          <p class="dash-card-label">Mis cobros</p>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script type="module" src="dashboard.js"></script>
+
+  <!-- POPUP DE COBRO -->
+  <div id="cobro-popup" class="modal-overlay" style="display:none">
+    <div class="modal-box">
+      <h2 class="modal-titulo">💳 Pago pendiente</h2>
+      <p id="cobro-popup-empresa" class="modal-subtitulo"></p>
+      <p id="cobro-popup-concepto" style="color:#333; font-size:15px; text-align:center"></p>
+      <p id="cobro-popup-monto" style="color:#0b3dff; font-size:28px; font-weight:800; text-align:center"></p>
+      <div class="modal-botones">
+        <button id="cobro-popup-aceptar" class="btn-acreditar modal-btn">ACEPTAR</button>
+        <button id="cobro-popup-rechazar" class="btn-retirar modal-btn">RECHAZAR</button>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
