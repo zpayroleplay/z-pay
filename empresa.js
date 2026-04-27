@@ -33,7 +33,11 @@ window.verificarPassword = async function () {
     return
   }
 
-  if (password !== empresaData.password_hash) {
+  // Verifica contra bcrypt via RPC
+  const { data: ok, error } = await supabase
+    .rpc('verificar_empresa', { p_company_id: empresaData.id, p_password: password })
+
+  if (error || !ok) {
     msg.style.color = 'red'
     msg.textContent = 'Contraseña incorrecta.'
     return
@@ -205,25 +209,10 @@ window.solicitarPago = async function () {
   msg.style.color = 'red'
   msg.textContent = ''
 
-  if (!userId) {
-    msg.textContent = 'Seleccioná un empleado.'
-    return
-  }
-
-  if (isNaN(monto) || monto <= 0) {
-    msg.textContent = 'Ingresá un monto válido.'
-    return
-  }
-
-  if (!concepto) {
-    msg.textContent = 'Ingresá un concepto.'
-    return
-  }
-
-  if (monto > parseFloat(empresaData.saldo)) {
-    msg.textContent = 'La empresa no tiene suficiente saldo.'
-    return
-  }
+  if (!userId) { msg.textContent = 'Seleccioná un empleado.'; return }
+  if (isNaN(monto) || monto <= 0) { msg.textContent = 'Ingresá un monto válido.'; return }
+  if (!concepto) { msg.textContent = 'Ingresá un concepto.'; return }
+  if (monto > parseFloat(empresaData.saldo)) { msg.textContent = 'La empresa no tiene suficiente saldo.'; return }
 
   const { error } = await supabase.from('company_payments').insert({
     company_id: empresaData.id,
@@ -233,10 +222,7 @@ window.solicitarPago = async function () {
     estado: 'pendiente'
   })
 
-  if (error) {
-    msg.textContent = 'Error al enviar la solicitud.'
-    return
-  }
+  if (error) { msg.textContent = 'Error al enviar la solicitud.'; return }
 
   msg.style.color = 'green'
   msg.textContent = '✅ Solicitud enviada al banco para aprobación.'
@@ -288,10 +274,7 @@ window.generarCobro = async function () {
     estado: 'pendiente'
   })
 
-  if (error) {
-    msg.textContent = 'Error al generar el cobro.'
-    return
-  }
+  if (error) { msg.textContent = 'Error al generar el cobro.'; return }
 
   msg.style.color = 'green'
   msg.textContent = `✅ Cobro enviado a ${cuenta.users?.nombre} ${cuenta.users?.apellido}.`

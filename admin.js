@@ -3,13 +3,10 @@ import { supabase } from './supabase.js'
 let accionActual = null
 let accountIdActual = null
 
-// ===== CARGAR USUARIOS EN LA TABLA =====
 async function cargarUsuarios() {
   const tbody = document.getElementById('tabla-usuarios')
 
-  const { data: usuarios, error } = await supabase
-    .from('users')
-    .select('*, accounts(numero_cuenta, saldo, sueldo, id)')
+  const { data: usuarios, error } = await supabase.rpc('obtener_usuarios_admin')
 
   if (error || !usuarios) {
     tbody.innerHTML = '<tr><td colspan="8">Error al cargar usuarios.</td></tr>'
@@ -19,11 +16,10 @@ async function cargarUsuarios() {
   tbody.innerHTML = ''
 
   for (const u of usuarios) {
-    const cuenta = u.accounts?.[0]
-    const numeroCuenta = cuenta?.numero_cuenta ?? '—'
-    const saldo = cuenta?.saldo ?? 0
-    const sueldo = cuenta?.sueldo ?? 0
-    const accountId = cuenta?.id ?? null
+    const numeroCuenta = u.numero_cuenta ?? '—'
+    const saldo = u.saldo ?? 0
+    const sueldo = u.sueldo ?? 0
+    const accountId = u.account_id ?? null
 
     const fila = document.createElement('tr')
     fila.innerHTML = `
@@ -40,7 +36,6 @@ async function cargarUsuarios() {
   }
 }
 
-// ===== MODAL =====
 window.abrirModal = function (accion, accountId, username) {
   accionActual = accion
   accountIdActual = accountId
@@ -86,52 +81,21 @@ async function confirmarModal() {
   }
 
   if (accionActual === 'sueldo') {
-    await supabase
-      .from('accounts')
-      .update({ sueldo: monto })
-      .eq('id', accountIdActual)
-    cerrarModal()
-    cargarUsuarios()
-    return
-  }
-
-  const { data: cuenta } = await supabase
-    .from('accounts')
-    .select('saldo')
-    .eq('id', accountIdActual)
-    .single()
-
-  let nuevoSaldo
-
-  if (accionActual === 'acreditar') {
-    nuevoSaldo = parseFloat(cuenta.saldo) + monto
-    await supabase.from('transactions').insert({
-      cuenta_destino: accountIdActual,
-      monto,
-      concepto: 'Acreditación por staff',
-      tipo: 'acreditacion'
-    })
-  } else {
-    if (monto > parseFloat(cuenta.saldo)) {
+    await supabase.rpc('admin_editar_sueldo', { p_account_id: accountIdActual, p_sueldo: monto })
+  } else if (accionActual === 'acreditar') {
+    await supabase.rpc('admin_acreditar', { p_account_id: accountIdActual, p_monto: monto })
+  } else if (accionActual === 'retirar') {
+    const { error } = await supabase.rpc('admin_retirar', { p_account_id: accountIdActual, p_monto: monto })
+    if (error) {
       alert('El usuario no tiene suficiente saldo.')
       return
     }
-    nuevoSaldo = parseFloat(cuenta.saldo) - monto
-    await supabase.from('transactions').insert({
-      cuenta_origen: accountIdActual,
-      monto,
-      concepto: 'Retiro por staff',
-      tipo: 'retiro'
-    })
   }
-
-  await supabase.from('accounts').update({ saldo: nuevoSaldo }).eq('id', accountIdActual)
 
   cerrarModal()
   cargarUsuarios()
 }
 
-// ===== CREAR USUARIO =====
 window.crearUsuario = async function () {
   const nombre = document.getElementById('nuevo-nombre').value.trim()
   const apellido = document.getElementById('nuevo-apellido').value.trim()
@@ -146,11 +110,8 @@ window.crearUsuario = async function () {
     return
   }
 
-  const { data: nuevoUser, error } = await supabase
-    .from('users')
-    .insert({ nombre, apellido, username, password_hash: password, rol })
-    .select()
-    .single()
+  const { data: nuevoId, error } = await supabase
+    .rpc('crear_usuario', { p_nombre: nombre, p_apellido: apellido, p_username: username, p_password: password, p_rol: rol })
 
   if (error) {
     msg.style.color = 'red'
@@ -160,11 +121,7 @@ window.crearUsuario = async function () {
 
   const numeroCuenta = Math.floor(1000000000 + Math.random() * 9000000000).toString()
 
-  await supabase.from('accounts').insert({
-    user_id: nuevoUser.id,
-    numero_cuenta: numeroCuenta,
-    saldo: 0
-  })
+  await supabase.from('accounts').insert({ user_id: nuevoId, numero_cuenta: numeroCuenta, saldo: 0 })
 
   msg.style.color = 'green'
   msg.textContent = `Usuario ${username} creado con cuenta ${numeroCuenta}`

@@ -9,10 +9,7 @@ if (user.rol !== 'admin' && user.rol !== 'superadmin') window.location.href = 'd
 async function cargarClientes() {
   const tbody = document.getElementById('tabla-clientes')
 
-  const { data: usuarios, error } = await supabase
-    .from('users')
-    .select('id, username, nombre, apellido, rol')
-    .order('nombre', { ascending: true })
+  const { data: usuarios, error } = await supabase.rpc('listar_clientes')
 
   if (error || !usuarios) {
     tbody.innerHTML = '<tr><td colspan="3">Error al cargar clientes.</td></tr>'
@@ -49,30 +46,11 @@ window.confirmarEliminar = function (userId, username) {
 
   document.getElementById('modal-confirmar').onclick = async () => {
     cerrarModal()
-    await eliminarUsuario(userId)
+    await supabase.rpc('eliminar_usuario', { p_user_id: userId })
+    cargarClientes()
   }
 
   document.getElementById('modal-overlay').style.display = 'flex'
-}
-
-async function eliminarUsuario(userId) {
-  const { data: cuenta } = await supabase
-    .from('accounts')
-    .select('id, numero_cuenta')
-    .eq('user_id', userId)
-    .single()
-
-  if (cuenta) {
-    await supabase.from('transactions')
-      .delete()
-      .or(`cuenta_origen.eq.${cuenta.numero_cuenta},cuenta_destino.eq.${cuenta.numero_cuenta}`)
-    await supabase.from('loans').delete().eq('numero_cuenta', cuenta.numero_cuenta)
-    await supabase.from('debts').delete().eq('numero_cuenta', cuenta.numero_cuenta)
-    await supabase.from('accounts').delete().eq('id', cuenta.id)
-  }
-
-  await supabase.from('users').delete().eq('id', userId)
-  cargarClientes()
 }
 
 cargarClientes()

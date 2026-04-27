@@ -38,18 +38,14 @@ window.cambiarPassword = async function () {
     return
   }
 
+  // Usa RPC que hashea con bcrypt antes de guardar
   const { error } = await supabase
-    .from('users')
-    .update({ password_hash: nueva })
-    .eq('id', user.id)
+    .rpc('cambiar_password', { p_user_id: user.id, p_nueva: nueva })
 
   if (error) {
     msg.textContent = 'Error al cambiar la contraseña.'
     return
   }
-
-  const userActualizado = { ...user, password_hash: nueva }
-  localStorage.setItem('zpay_user', JSON.stringify(userActualizado))
 
   msg.style.color = 'green'
   msg.textContent = '✅ Contraseña actualizada con éxito.'
@@ -75,7 +71,6 @@ window.cambiarAlias = async function () {
     return
   }
 
-  // Verificamos si ya existe
   const { data: existente } = await supabase
     .from('accounts')
     .select('id')

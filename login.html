@@ -28,20 +28,13 @@
     </div>
   </div>
 
-  <script type="module" src="app.js"></script>
-
-</body>
-</html>
-<script>
+  <script>
     function togglePassword() {
       const input = document.getElementById('password')
       input.type = input.type === 'password' ? 'text' : 'password'
     }
-
-    function login() {
-      document.getElementById('login-btn').dispatchEvent(new Event('click-interno'))
-    }
   </script>
+
   <script type="module">
     import { supabase } from './supabase.js'
 
@@ -57,30 +50,26 @@
         return
       }
 
+      // Usa la función RPC que compara con bcrypt en la base de datos
       const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('username', username)
-        .eq('password_hash', password)
-        .single()
+        .rpc('verificar_login', { p_username: username, p_password: password })
 
-      if (error || !data) {
+      if (error || !data || data.length === 0) {
         errorMsg.textContent = 'Usuario o contraseña incorrectos.'
         return
       }
 
-      localStorage.setItem('zpay_user', JSON.stringify(data))
+      const user = data[0]
+      localStorage.setItem('zpay_user', JSON.stringify(user))
 
-     if (data.rol === 'superadmin') {
-  window.location.href = 'superadmin.html'
-} else if (data.rol === 'admin') {
-  window.location.href = 'admin-dashboard.html'
-} else {
-  window.location.href = 'dashboard.html'
-}
-}
-      
-    )
+      if (user.rol === 'superadmin') {
+        window.location.href = 'superadmin.html'
+      } else if (user.rol === 'admin') {
+        window.location.href = 'admin-dashboard.html'
+      } else {
+        window.location.href = 'dashboard.html'
+      }
+    })
   </script>
 
 </body>
