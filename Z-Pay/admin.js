@@ -1,15 +1,18 @@
 import { supabase } from './supabase.js'
 
+const OPERADOR_ID = '81d761fb-9958-4cb1-b4d0-91e1f2ac5043'
+
+const userData = localStorage.getItem('zpay_user')
+if (!userData) window.location.href = 'login.html'
+const user = JSON.parse(userData)
+
 let accionActual = null
 let accountIdActual = null
 
-// ===== CARGAR USUARIOS EN LA TABLA =====
 async function cargarUsuarios() {
   const tbody = document.getElementById('tabla-usuarios')
 
-  const { data: usuarios, error } = await supabase
-    .from('users')
-    .select('*, accounts(numero_cuenta, saldo, sueldo, id)')
+  const { data: usuarios, error } = await supabase.rpc('obtener_usuarios_admin')
 
   if (error || !usuarios) {
     tbody.innerHTML = '<tr><td colspan="8">Error al cargar usuarios.</td></tr>'
@@ -19,11 +22,10 @@ async function cargarUsuarios() {
   tbody.innerHTML = ''
 
   for (const u of usuarios) {
-    const cuenta = u.accounts?.[0]
-    const numeroCuenta = cuenta?.numero_cuenta ?? '—'
-    const saldo = cuenta?.saldo ?? 0
-    const sueldo = cuenta?.sueldo ?? 0
-    const accountId = cuenta?.id ?? null
+    const numeroCuenta = u.numero_cuenta ?? '—'
+    const saldo = u.saldo ?? 0
+    const sueldo = u.sueldo ?? 0
+    const accountId = u.account_id ?? null
 
     const fila = document.createElement('tr')
     fila.innerHTML = `
@@ -40,7 +42,38 @@ async function cargarUsuarios() {
   }
 }
 
-// ===== MODAL =====
+// Interruptor del sistema — solo para el operador
+async function iniciarControlSistema() {
+  if (user.id !== OPERADOR_ID) return
+
+  document.getElementById('card-sistema').style.display = 'block'
+
+  const { data: config } = await supabase
+    .from('system_config')
+    .select('sistema_activo')
+    .eq('id', 1)
+    .single()
+
+  if (config) {
+    const toggle = document.getElementById('toggle-sistema')
+    const estado = document.getElementById('sistema-estado')
+    toggle.checked = config.sistema_activo
+    estado.textContent = config.sistema_activo ? 'ACTIVO' : 'INACTIVO'
+    estado.style.color = config.sistema_activo ? '#22c55e' : '#ef4444'
+  }
+}
+
+window.cambiarEstadoSistema = async function (activo) {
+  await supabase
+    .from('system_config')
+    .update({ sistema_activo: activo })
+    .eq('id', 1)
+
+  const estado = document.getElementById('sistema-estado')
+  estado.textContent = activo ? 'ACTIVO' : 'INACTIVO'
+  estado.style.color = activo ? '#22c55e' : '#ef4444'
+}
+
 window.abrirModal = function (accion, accountId, username) {
   accionActual = accion
   accountIdActual = accountId
@@ -86,52 +119,21 @@ async function confirmarModal() {
   }
 
   if (accionActual === 'sueldo') {
-    await supabase
-      .from('accounts')
-      .update({ sueldo: monto })
-      .eq('id', accountIdActual)
-    cerrarModal()
-    cargarUsuarios()
-    return
-  }
-
-  const { data: cuenta } = await supabase
-    .from('accounts')
-    .select('saldo')
-    .eq('id', accountIdActual)
-    .single()
-
-  let nuevoSaldo
-
-  if (accionActual === 'acreditar') {
-    nuevoSaldo = parseFloat(cuenta.saldo) + monto
-    await supabase.from('transactions').insert({
-      cuenta_destino: accountIdActual,
-      monto,
-      concepto: 'Acreditación por staff',
-      tipo: 'acreditacion'
-    })
-  } else {
-    if (monto > parseFloat(cuenta.saldo)) {
+    await supabase.rpc('admin_editar_sueldo', { p_account_id: accountIdActual, p_sueldo: monto })
+  } else if (accionActual === 'acreditar') {
+    await supabase.rpc('admin_acreditar', { p_account_id: accountIdActual, p_monto: monto })
+  } else if (accionActual === 'retirar') {
+    const { error } = await supabase.rpc('admin_retirar', { p_account_id: accountIdActual, p_monto: monto })
+    if (error) {
       alert('El usuario no tiene suficiente saldo.')
       return
     }
-    nuevoSaldo = parseFloat(cuenta.saldo) - monto
-    await supabase.from('transactions').insert({
-      cuenta_origen: accountIdActual,
-      monto,
-      concepto: 'Retiro por staff',
-      tipo: 'retiro'
-    })
   }
-
-  await supabase.from('accounts').update({ saldo: nuevoSaldo }).eq('id', accountIdActual)
 
   cerrarModal()
   cargarUsuarios()
 }
 
-// ===== CREAR USUARIO =====
 window.crearUsuario = async function () {
   const nombre = document.getElementById('nuevo-nombre').value.trim()
   const apellido = document.getElementById('nuevo-apellido').value.trim()
@@ -146,11 +148,8 @@ window.crearUsuario = async function () {
     return
   }
 
-  const { data: nuevoUser, error } = await supabase
-    .from('users')
-    .insert({ nombre, apellido, username, password_hash: password, rol })
-    .select()
-    .single()
+  const { data: nuevoId, error } = await supabase
+    .rpc('crear_usuario', { p_nombre: nombre, p_apellido: apellido, p_username: username, p_password: password, p_rol: rol })
 
   if (error) {
     msg.style.color = 'red'
@@ -159,12 +158,7 @@ window.crearUsuario = async function () {
   }
 
   const numeroCuenta = Math.floor(1000000000 + Math.random() * 9000000000).toString()
-
-  await supabase.from('accounts').insert({
-    user_id: nuevoUser.id,
-    numero_cuenta: numeroCuenta,
-    saldo: 0
-  })
+  await supabase.from('accounts').insert({ user_id: nuevoId, numero_cuenta: numeroCuenta, saldo: 0 })
 
   msg.style.color = 'green'
   msg.textContent = `Usuario ${username} creado con cuenta ${numeroCuenta}`
@@ -177,4 +171,5 @@ window.crearUsuario = async function () {
   cargarUsuarios()
 }
 
-cargarUsuarios()
+// Iniciar todo en paralelo
+Promise.all([cargarUsuarios(), iniciarControlSistema()])

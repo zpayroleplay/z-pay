@@ -7,16 +7,14 @@ const user = JSON.parse(userData)
 if (user.rol !== 'admin' && user.rol !== 'superadmin') window.location.href = 'dashboard.html'
 
 async function cargarClientes() {
-  const { data: cuentas } = await supabase
-    .from('accounts')
-    .select('numero_cuenta, alias, users(nombre, apellido)')
+  const { data: cuentas } = await supabase.rpc('listar_cuentas_con_usuarios')
 
   const select = document.getElementById('notif-destinatario')
 
   for (const c of cuentas ?? []) {
     const option = document.createElement('option')
     option.value = c.numero_cuenta
-    option.textContent = `${c.users?.nombre} ${c.users?.apellido} (${c.alias ?? c.numero_cuenta})`
+    option.textContent = `${c.nombre} ${c.apellido} (${c.alias ?? c.numero_cuenta})`
     select.appendChild(option)
   }
 }
@@ -35,10 +33,7 @@ window.enviarNotificacion = async function () {
   }
 
   if (destinatario === 'todos') {
-    const { data: cuentas } = await supabase
-      .from('accounts')
-      .select('numero_cuenta')
-
+    const { data: cuentas } = await supabase.rpc('listar_cuentas_con_usuarios')
     for (const c of cuentas ?? []) {
       await supabase.from('notifications').insert({
         numero_cuenta: c.numero_cuenta,

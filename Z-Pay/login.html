@@ -5,8 +5,62 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <title>Z-Pay | Login</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #2bb0ff 0%, #0b3dff 50%, #0a1dff 100%);
+      z-index: 9999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .loading-overlay.visible {
+      display: flex;
+    }
+
+    .loading-logo {
+      font-size: 52px;
+      font-weight: 900;
+      color: white;
+    }
+
+    .loading-logo .logo-z {
+      color: #FFD400;
+    }
+
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 5px solid rgba(255,255,255,0.3);
+      border-top-color: #FFD400;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .loading-texto {
+      color: white;
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+      letter-spacing: 1px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
+
+  <!-- PANTALLA DE CARGA -->
+  <div class="loading-overlay" id="loading-overlay">
+    <p class="loading-logo"><span class="logo-z">Z</span>-Pay</p>
+    <div class="loading-spinner"></div>
+    <p class="loading-texto">Iniciando sesión...</p>
+  </div>
 
   <div class="login">
     <h1 class="logo login-logo"><span class="logo-z">Z</span>-Pay!</h1>
@@ -28,20 +82,13 @@
     </div>
   </div>
 
-  <script type="module" src="app.js"></script>
-
-</body>
-</html>
-<script>
+  <script>
     function togglePassword() {
       const input = document.getElementById('password')
       input.type = input.type === 'password' ? 'text' : 'password'
     }
-
-    function login() {
-      document.getElementById('login-btn').dispatchEvent(new Event('click-interno'))
-    }
   </script>
+
   <script type="module">
     import { supabase } from './supabase.js'
 
@@ -57,30 +104,47 @@
         return
       }
 
-      const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('username', username)
-        .eq('password_hash', password)
-        .single()
+      // Mostrar pantalla de carga
+      document.getElementById('loading-overlay').classList.add('visible')
 
-      if (error || !data) {
+      // Verificar credenciales
+      const { data, error } = await supabase
+        .rpc('verificar_login', { p_username: username, p_password: password })
+
+      if (error || !data || data.length === 0) {
+        document.getElementById('loading-overlay').classList.remove('visible')
         errorMsg.textContent = 'Usuario o contraseña incorrectos.'
         return
       }
 
-      localStorage.setItem('zpay_user', JSON.stringify(data))
+      const user = data[0]
 
-     if (data.rol === 'superadmin') {
-  window.location.href = 'superadmin.html'
-} else if (data.rol === 'admin') {
-  window.location.href = 'admin-dashboard.html'
-} else {
-  window.location.href = 'dashboard.html'
-}
-}
-      
-    )
+      // Verificar estado del sistema (excepto operador Francesco)
+      const OPERADOR_ID = '81d761fb-9958-4cb1-b4d0-91e1f2ac5043'
+
+      if (user.id !== OPERADOR_ID) {
+        const { data: config } = await supabase
+          .from('system_config')
+          .select('sistema_activo')
+          .eq('id', 1)
+          .single()
+
+        if (config && !config.sistema_activo) {
+          window.location.href = 'fuera-de-servicio.html'
+          return
+        }
+      }
+
+      localStorage.setItem('zpay_user', JSON.stringify(user))
+
+      if (user.rol === 'superadmin') {
+        window.location.href = 'superadmin.html'
+      } else if (user.rol === 'admin') {
+        window.location.href = 'admin-dashboard.html'
+      } else {
+        window.location.href = 'dashboard.html'
+      }
+    })
   </script>
 
 </body>

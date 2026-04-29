@@ -9,10 +9,7 @@ let accionActual = null
 let empresaIdActual = null
 
 async function cargarGerentes() {
-  const { data: usuarios } = await supabase
-    .from('users')
-    .select('id, nombre, apellido, username')
-    .order('nombre')
+  const { data: usuarios } = await supabase.rpc('listar_usuarios_basico')
 
   const select = document.getElementById('emp-owner')
   for (const u of usuarios ?? []) {
@@ -139,39 +136,16 @@ async function confirmarModal() {
     return
   }
 
-  const { data: empresa } = await supabase
-    .from('companies')
-    .select('saldo, numero_cuenta')
-    .eq('id', empresaIdActual)
-    .single()
-
-  let nuevoSaldo
-
   if (accionActual === 'acreditar') {
-    nuevoSaldo = parseFloat(empresa.saldo) + valor
-    await supabase.from('transactions').insert({
-      cuenta_destino: empresa.numero_cuenta,
-      monto: valor,
-      concepto: 'Acreditación por staff',
-      tipo: 'acreditacion',
-      estado: 'completada'
-    })
-  } else {
-    if (valor > parseFloat(empresa.saldo)) {
+    await supabase.rpc('admin_acreditar_empresa', { p_empresa_id: empresaIdActual, p_monto: valor })
+  } else if (accionActual === 'retirar') {
+    const { error } = await supabase.rpc('admin_retirar_empresa', { p_empresa_id: empresaIdActual, p_monto: valor })
+    if (error) {
       alert('La empresa no tiene suficiente saldo.')
       return
     }
-    nuevoSaldo = parseFloat(empresa.saldo) - valor
-    await supabase.from('transactions').insert({
-      cuenta_origen: empresa.numero_cuenta,
-      monto: valor,
-      concepto: 'Retiro por staff',
-      tipo: 'retiro',
-      estado: 'completada'
-    })
   }
 
-  await supabase.from('companies').update({ saldo: nuevoSaldo }).eq('id', empresaIdActual)
   cerrarModal()
   cargarEmpresas()
 }
@@ -195,13 +169,14 @@ window.crearEmpresa = async function () {
 
   const numeroCuenta = Math.floor(3000000000 + Math.random() * 6999999999).toString()
 
-  const { error } = await supabase.from('companies').insert({
-    nombre, rubro, alias,
-    password_hash: password,
-    numero_cuenta: numeroCuenta,
-    owner_id: ownerId,
-    saldo: 0,
-    gastos_operativos: gastos
+  const { error } = await supabase.rpc('crear_empresa', {
+    p_nombre: nombre,
+    p_rubro: rubro,
+    p_alias: alias,
+    p_password: password,
+    p_gastos: gastos,
+    p_owner_id: ownerId,
+    p_numero_cuenta: numeroCuenta
   })
 
   if (error) {
@@ -242,11 +217,9 @@ window.cobrarGastos = async function () {
 
   const hace7dias = new Date()
   hace7dias.setDate(hace7dias.getDate() - 7)
-
   let totalCobrado = 0
 
   for (const e of empresas) {
-    // Calculamos ingresos de los últimos 7 días
     const { data: ingresos } = await supabase
       .from('transactions')
       .select('monto')
@@ -254,18 +227,14 @@ window.cobrarGastos = async function () {
       .gte('created_at', hace7dias.toISOString())
 
     const totalIngresos = (ingresos ?? []).reduce((sum, t) => sum + parseFloat(t.monto), 0)
-
     if (totalIngresos <= 0) continue
 
     const gastos = totalIngresos * (parseFloat(e.gastos_operativos) / 100)
     const saldoActual = parseFloat(e.saldo)
-
     if (gastos > saldoActual) continue
 
-    const nuevoSaldo = saldoActual - gastos
-
     await supabase.from('companies').update({
-      saldo: nuevoSaldo,
+      saldo: saldoActual - gastos,
       ultimo_cobro_gastos: new Date().toISOString()
     }).eq('id', e.id)
 
@@ -283,6 +252,10 @@ window.cobrarGastos = async function () {
   msg.style.color = 'green'
   msg.textContent = `✅ Gastos operativos cobrados. Total descontado: U$D ${totalCobrado.toFixed(2)}`
   cargarEmpresas()
+}
+
+window.notifAdmin = function () {
+  window.location.href = 'notif-admin.html'
 }
 
 cargarGerentes()

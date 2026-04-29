@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Z-Pay | Fuera de servicio</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #2bb0ff 0%, #0b3dff 55%, #0a1dff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .fds-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+      gap: 28px;
+      max-width: 700px;
+      width: 100%;
+    }
+
+    .fds-titulo {
+      color: white;
+      font-size: 52px;
+      font-weight: 900;
+      text-decoration: underline;
+      letter-spacing: 1px;
+    }
+
+    .fds-texto {
+      color: white;
+      font-size: 22px;
+      line-height: 1.7;
+    }
+
+    .fds-logo {
+      font-size: 44px;
+      font-weight: 900;
+      color: white;
+    }
+
+    .fds-logo .logo-z {
+      color: #FFD400;
+    }
+  </style>
+</head>
+<body>
+  <div class="fds-container">
+
+    <!-- Ícono laptop con triángulo de advertencia, estilo outline amarillo -->
+    <svg width="160" height="130" viewBox="0 0 160 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Pantalla de la laptop -->
+      <rect x="22" y="8" width="116" height="80" rx="10" ry="10" stroke="#FFD400" stroke-width="6" fill="none"/>
+      <!-- Triángulo de advertencia dentro de la pantalla -->
+      <polygon points="80,28 108,72 52,72" stroke="#FFD400" stroke-width="5" stroke-linejoin="round" fill="none"/>
+      <!-- Signo de exclamación -->
+      <line x1="80" y1="40" x2="80" y2="58" stroke="#FFD400" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="80" cy="65" r="3" fill="#FFD400"/>
+      <!-- Base de la laptop (teclado) -->
+      <path d="M10 96 Q10 106 22 106 L138 106 Q150 106 150 96 L142 88 H18 Z" stroke="#FFD400" stroke-width="6" fill="none" stroke-linejoin="round"/>
+      <!-- Bisagra / línea del teclado -->
+      <line x1="18" y1="88" x2="142" y2="88" stroke="#FFD400" stroke-width="6" stroke-linecap="round"/>
+      <!-- Tres puntitos en la base -->
+      <circle cx="72" cy="97" r="3.5" fill="#FFD400"/>
+      <circle cx="80" cy="97" r="3.5" fill="#FFD400"/>
+      <circle cx="88" cy="97" r="3.5" fill="#FFD400"/>
+    </svg>
+
+    <h1 class="fds-titulo">¡Lo sentimos!</h1>
+
+    <p class="fds-texto">
+      Este servicio no se encuentra disponible en<br>este momento.
+    </p>
+
+    <p class="fds-texto">
+      Si lo sentís necesario podés acercarte a la<br>sucursal más cercana.
+    </p>
+
+    <p class="fds-logo"><span class="logo-z">Z</span>-Pay</p>
+
+  </div>
+</body>
+</html>

@@ -5,6 +5,65 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <title>Z-Pay | Admin</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .toggle-sistema {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 64px;
+      height: 32px;
+      cursor: pointer;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: #ef4444;
+      border-radius: 32px;
+      transition: background 0.3s;
+    }
+
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      left: 4px;
+      top: 4px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+
+    .toggle-switch input:checked + .toggle-slider {
+      background: #22c55e;
+    }
+
+    .toggle-switch input:checked + .toggle-slider::before {
+      transform: translateX(32px);
+    }
+
+    .toggle-label {
+      font-size: 15px;
+      font-weight: 700;
+      color: #333;
+    }
+
+    #sistema-estado {
+      font-weight: 800;
+    }
+  </style>
 </head>
 <body>
 
@@ -30,18 +89,33 @@
           <input type="text" id="nuevo-username" placeholder="ID de PlayStation" />
           <input type="password" id="nuevo-password" placeholder="Contraseña" />
           <select id="nuevo-rol" class="admin-select">
-  <option value="user">Cliente</option>
-  <option value="admin">Admin</option>
-</select>
+            <option value="user">Cliente</option>
+            <option value="admin">Admin</option>
+          </select>
           <button class="btn-acreditar" onclick="crearUsuario()">CREAR USUARIO</button>
         </div>
         <p id="msg-crear" class="admin-msg"></p>
+
         <!-- ACCESO A PRÉSTAMOS -->
-<div class="admin-card" style="margin-top: 0">
-  <h2 class="admin-card-title">Solicitudes de préstamos</h2>
-  <p style="color:#555; margin-bottom:16px">Revisá y gestioná las solicitudes pendientes de los jugadores.</p>
-  <button class="btn-acreditar" onclick="window.location.href='prestamos-admin.html'">VER SOLICITUDES</button>
-</div>
+        <div class="admin-card" style="margin-top: 0">
+          <h2 class="admin-card-title">Solicitudes de préstamos</h2>
+          <p style="color:#555; margin-bottom:16px">Revisá y gestioná las solicitudes pendientes de los jugadores.</p>
+          <button class="btn-acreditar" onclick="window.location.href='prestamos-admin.html'">VER SOLICITUDES</button>
+        </div>
+
+        <!-- INTERRUPTOR DEL SISTEMA (solo operador Francesco) -->
+        <div class="admin-card" id="card-sistema" style="display:none; margin-top:0">
+          <h2 class="admin-card-title">Estado del sistema</h2>
+          <p style="color:#555; margin-bottom:16px">Activá o desactivá el acceso al sistema para todos los usuarios.</p>
+          <div class="toggle-sistema">
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-sistema" onchange="cambiarEstadoSistema(this.checked)">
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label">Sistema: <span id="sistema-estado">—</span></span>
+          </div>
+        </div>
+
       </div>
 
       <!-- TABLA DE USUARIOS -->
@@ -54,13 +128,13 @@
               <th>N° Cuenta</th>
               <th>Saldo U$D</th>
               <th>Sueldo U$D</th>
-<th>Acreditar</th>
-<th>Sueldo</th>
-<th>Retirar</th>
+              <th>Acreditar</th>
+              <th>Sueldo</th>
+              <th>Retirar</th>
             </tr>
           </thead>
           <tbody id="tabla-usuarios">
-            <tr><td colspan="6">Cargando...</td></tr>
+            <tr><td colspan="8">Cargando...</td></tr>
           </tbody>
         </table>
       </div>
